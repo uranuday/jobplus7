@@ -5,3 +5,4 @@ LouPlus Team 7 https://www.shiyanlou.com/louplus/python
 
 * [louplus](https://github.com/louplus)
 * [uranuday](https://github.com/uranuday)
+* [qff](https://github.com/qffa)
