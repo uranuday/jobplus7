@@ -1,0 +1,4 @@
+flask
+flask_alchemy
+mysqlclient
+flask_login
