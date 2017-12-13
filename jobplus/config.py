@@ -4,15 +4,17 @@ class BaseConfig(object):
 
 
 
-class Development(BaseConfig):
+class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root@localhost:3306/jobplus?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'sqlit://'
+    TEMPLATES_AUTO_RELOAD = True
 
 
 
 
 class ProductionConfig(BaseConfig):
-    pass
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root@localhost:3306/jobplus?charset=utf8'
+    
 
 
 
