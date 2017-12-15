@@ -2,3 +2,5 @@ flask
 flask_alchemy
 mysqlclient
 flask_login
+flask_wtf
+flask_migrate
