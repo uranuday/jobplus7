@@ -6,7 +6,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlit://'
+    SQLALCHEMY_DATABASE_URI = 'sqlite://'
     TEMPLATES_AUTO_RELOAD = True
 
 

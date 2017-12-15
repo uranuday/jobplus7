@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hask
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -22,7 +22,7 @@ class Base(db.Model):
 class Company(Base):
     id = db.Column(db.Integer, primary_key = True)
     logo_url = db.Column(db.String(256))
-    name = db.Column(db.String(64), unqiue=True, nullale=False)
+    name = db.Column(db.String(64), unique=True, nullable=False)
     website = db.Column(db.String(64))
     slogan = db.Column(db.String(64))
     location = db.Column(db.String(256))
@@ -75,7 +75,7 @@ class Job(Base):
     description = db.Column(db.String(1024))
     requirement = db.Column(db.String(1024))
     is_online = db.Column(db.Boolean, default=True)
-    applicant = db.relationship('User', secondary=Application, backref='applied_jobs')
+    applicant = db.relationship('User', secondary="application", backref='applied_jobs')
 
 
 
@@ -91,7 +91,6 @@ class Application(Base):
     INTERVIEW = 30
 
     __tablename__ = 'application'
-    id = db.Column(db.Integer, primary_key = True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     status = db.Column(db.SmallInteger, default=APPLIED)
@@ -101,7 +100,7 @@ class Application(Base):
 
 
     def __repr__(self):
-        return "<Application: {}: {}>".format(self.job.name, self.user.name)
+        return "<Application: {} - {}>".format(self.job.name, self.user.name)
 
 
 
