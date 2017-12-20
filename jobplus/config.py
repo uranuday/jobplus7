@@ -6,7 +6,7 @@ class BaseConfig(object):
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/jobplus.db'
     TEMPLATES_AUTO_RELOAD = True
 
 
