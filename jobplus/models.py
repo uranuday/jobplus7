@@ -22,7 +22,7 @@ class User(Base, UserMixin):
     ROLE_ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True, index=True, nullable=False)
+    username = db.Column(db.String(32), unique=True, index=True, nullable=False)
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
@@ -30,6 +30,10 @@ class User(Base, UserMixin):
     resume = db.Column(db.String(32))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     company = db.relationship("Company", uselist=False)
+    name = db.Column(db.String(32))
+    phone = db.Column(db.Integer)
+    working_years = db.Column(db.SmallInteger)
+    is_active = db.Column(db.Boolean, default=True)
 
 
     def __repr__(self):
@@ -78,7 +82,7 @@ class Job(Base):
     location = db.Column(db.String(32))
     description = db.Column(db.String(1024))
     requirement = db.Column(db.String(1024))
-    status = db.Column(db.Boolean, default=True)
+    is_online = db.Column(db.Boolean, default=True)
     company = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     applicant = db.relationship('User', secondary="application", backref='applied_jobs')
