@@ -12,6 +12,8 @@ def index():
     return render_template("admin/index.html")
 
 
-
+@admin.route("/user")
+def user():
+    return render_template("admin/user.html")
 
 

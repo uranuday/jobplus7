@@ -24,7 +24,7 @@ def login():
         login_user(user, form.remember_me.data)
 
         if user.is_admin:
-            return redirect(url_for('admin.index'))
+            return redirect(url_for('admin.user'))
 
         elif user.is_company:
             return redirect(url_for('company.index'))
@@ -37,4 +37,9 @@ def login():
 
 
 
-
+@front.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("您已安全退出","success")
+    return redirect(url_for(".index"))
