@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from jobplus.models import User
 
 
 
@@ -14,6 +15,7 @@ def index():
 
 @admin.route("/user")
 def user():
-    return render_template("admin/user.html")
+    users = User.query.all()
+    return render_template("admin/user.html", users=users)
 
 
