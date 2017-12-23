@@ -43,12 +43,12 @@ class UserProfileForm(FlaskForm):
 
 
 class CompanyProfileForm(FlaskForm):
-    name = StringField("名称", validators=[Required(), Length(128)])
-    location = StringField("地址", validators=[Required(), Length(128)])
-    logo_url = StringField("Logo URL", validators=[Length(128)])
-    website = StringField("Web Site", validators=[Length(64)])
-    slogan = StringField("Slogan", validators=[Length(128)])
-    description = TextAreaField("描述", validators=[Required(), Length(2048)])
+    name = StringField("名称", validators=[Required(), Length(0, 128)])
+    location = StringField("地址", validators=[Required(), Length(0, 128)])
+    logo_url = StringField("Logo URL", validators=[Length(0, 128)])
+    website = StringField("Web Site", validators=[Length(0, 64)])
+    slogan = StringField("Slogan", validators=[Length(0, 128)])
+    description = TextAreaField("描述", validators=[Required(), Length(0, 2048)])
     submit = SubmitField("保存")
 
     

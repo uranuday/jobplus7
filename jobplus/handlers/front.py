@@ -26,9 +26,9 @@ def login():
         if user.is_admin:
             return redirect(url_for('admin.user'))
         elif user.is_company:
-            return redirect(url_for('company.index'))
+            return redirect(url_for('company.profile'))
         else:
-            return redirect(url_for('user.index'))
+            return redirect(url_for('user.profile'))
 
     else:
         return render_template('login.html', form=form)
