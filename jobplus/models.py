@@ -63,7 +63,7 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True, index=True, nullable=False)
-    location = db.Column(db.String(128), nullable=False)
+    location = db.Column(db.String(128))
     logo_url = db.Column(db.String(128))
     website = db.Column(db.String(64),)
     slogan = db.Column(db.String(128))

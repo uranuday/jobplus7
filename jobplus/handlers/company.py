@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, url_for, redirect
 from flask_login import current_user
 from jobplus.forms import CompanyProfileForm
 from jobplus.decorators import company_required
+from jobplus.models import Company
 
 
 
@@ -30,4 +31,10 @@ def profile():
 
 
 
+@company.route("/<company_id>")
+def company_detail(company_id):
+    company = Company.query.get_or_404(company_id)
+    return render_template("company/company_detail.html", company=company)
 
+
+        
