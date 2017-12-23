@@ -33,11 +33,11 @@ class User(Base, UserMixin):
     name = db.Column(db.String(32))
     phone = db.Column(db.Integer)
     working_years = db.Column(db.SmallInteger)
-    is_active = db.Column(db.Boolean, default=True)
+    is_disable = db.Column(db.Boolean, default=False)
 
 
     def __repr__(self):
-        return '<User:{}>'.format(self.name)
+        return '<User:{}>'.format(self.username)
 
     @property
     def password(self):
@@ -63,11 +63,11 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True, index=True, nullable=False)
-    location = db.Column(db.String(32), nullable=False)
-    logo_url = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(128), nullable=False)
+    logo_url = db.Column(db.String(128))
     website = db.Column(db.String(64),)
-    slogan = db.Column(db.String(32), nullable=False)
-    description = db.Column(db.String(128))
+    slogan = db.Column(db.String(128))
+    description = db.Column(db.String(2048), nullable=False)
 
     def __repr__(self):
         return '<Company: {}>'.format(self.name)
@@ -79,9 +79,9 @@ class Job(Base):
     name = db.Column(db.String(128), unique=True, index=True, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
     experience = db.Column(db.String(32))
-    location = db.Column(db.String(32))
-    description = db.Column(db.String(1024))
-    requirement = db.Column(db.String(1024))
+    location = db.Column(db.String(128))
+    description = db.Column(db.String(2048))
+    requirement = db.Column(db.String(2048))
     is_online = db.Column(db.Boolean, default=True)
     company = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
@@ -103,7 +103,7 @@ class Application(Base):
 
 
     def __repr__(self):
-        return "<Application: {} - {}>".format(self.job.name, self.user.name)
+        return "<Application: {} - {}>".format(self.job.name, self.user.username)
 
 
 

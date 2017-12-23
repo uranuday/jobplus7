@@ -1,0 +1,10 @@
+{% extends "company/company_base.html" %}
+{% from "macros.html" import render_form %}
+
+{% block company %}
+<div class="form">
+    {{ render_form(form, url_for("company.profile")) }}
+
+</div>
+
+{% endblock %}
