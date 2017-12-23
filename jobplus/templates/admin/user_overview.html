@@ -41,15 +41,15 @@
                 <td>{{ user.company.website }}</td>
                 <td>
                     <div class="btn-gropu" role="group">
-                        <a href="#" type="button" class="btn btn-default" title="编辑">
+                        <a href="{{ url_for("admin.edit_user", user_id=user.id) }}" type="button" class="btn btn-default" title="编辑">
                             <span class="glyphicon glyphicon-pencil" title="编辑" aria-hidden="true"></span>
                         </a>
                         {% if not user.is_disable %}
-                        <a href="#" type="button" class="btn btn-default" title="禁用">
+                        <a href="{{ url_for("admin.disable_user", user_id=user.id) }}" type="button" class="btn btn-default" title="禁用">
                             <span class="glyphicon glyphicon-ban-circle" title="禁用" aria-hidden="true"></span>
                         </a>
                         {% else %}
-                        <a href="#" type="button" class="btn btn-default" title="启用">
+                        <a href="{{ url_for("admin.enable_user", user_id=user.id) }}" type="button" class="btn btn-default" title="启用">
                             <span class="glyphicon glyphicon-ok-circle" title="启用" aria-hidden="true"></span>
                         </a>
                         {% endif %}

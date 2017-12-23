@@ -47,7 +47,10 @@ def iter_users():
 
 
 
-def run():
+def create_db():
+    db.drop_all()
+    db.create_all()
+
     for company in iter_companies():
         db.session.add(company)
 
