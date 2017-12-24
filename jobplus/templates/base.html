@@ -8,7 +8,7 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static", filename="signin.css") }}">
+    {% block css %}{% endblock %}
 
 </head>
 
@@ -30,8 +30,8 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">职位</a></li>
                     <li><a href="#">公司</a></li>
+                    <li><a href="#">职位</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if not current_user.is_authenticated %}
