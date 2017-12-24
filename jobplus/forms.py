@@ -33,6 +33,7 @@ class UserProfileForm(FlaskForm):
     submit = SubmitField("保存")
 
 
+
     def update_user(self, user):
         self.populate_obj(user)
         db.session.add(user)
@@ -51,13 +52,52 @@ class CompanyProfileForm(FlaskForm):
     description = TextAreaField("描述", validators=[Required(), Length(0, 2048)])
     submit = SubmitField("保存")
 
-    
+
+
     def update_company(self, company):
         self.populate_obj(company)
         db.session.add(company)
         db.session.commit()
         flash("更新成功", 'success')
         return company
+
+
+
+
+
+
+class AddUserForm(FlaskForm):
+    username = StringField("用户名", validators=[Required(), Length(3,32)])
+    email = StringField("邮箱", validators=[Required(), Email()])
+    password = PasswordField("密码", validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField("重复密码", validators=[Required(), EqualTo('password', "密码不匹配")])
+    name = StringField("姓名", validators=[Required(), Length(1, 30)])
+    phone = IntegerField("手机号", validators=[Required(), NumberRange(min=10000000000, max=19999999999, message="无效手机号")])
+    submit = SubmitField("添加")
+
+
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError("用户名已存在")
+
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError("邮箱已存在")
+
+
+
+    def add_user(self):
+        user = User()
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        flash("添加成功", 'success')
+        return user
+
+
+
 
 
 
