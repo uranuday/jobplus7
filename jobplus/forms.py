@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField, IntegerField, FileField
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
 from flask import flash
-from jobplus.models import db, User
+from jobplus.models import db, User, Company
 
 
 
@@ -102,6 +102,65 @@ class AddUserForm(FlaskForm):
 class UploadResumeForm(FlaskForm):
     resume = FileField("简历", validators=[Required()])
     submit = SubmitField("提交")
+
+
+
+
+class AddCompanyForm(FlaskForm):
+    username = StringField("用户名", validators=[Required(), Length(3,32)])
+    email = StringField("邮箱", validators=[Required(), Email()])
+    password = PasswordField("密码", validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField("重复密码", validators=[Required(), EqualTo('password', "密码不匹配")])
+    company_name = StringField("公司名称", validators=[Required(), Length(1, 120)])
+    website = StringField("企业网站", validators=[Required(), Length(1, 64)])
+    logo_url = StringField("LOGO链接", validators=[Required(), Length(1, 120)])
+    slogan = StringField("Slogan", validators=[Required(), Length(1, 120)])
+    description = TextAreaField("企业介绍", validators=[Required(), Length(10, 2000)])
+    submit = SubmitField("添加")
+
+
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError("用户名已存在")
+
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError("邮箱已存在")
+
+
+    def validate_company_name(self, field):
+        if Company.query.filter_by(name=field.data).first():
+            raise ValidationError("公司已存在")
+
+
+    def add_company(self):
+        company = Company()
+        user = User()
+
+        company.name = self.company_name.data
+        company.website = self.website.data
+        company.logo_url = self.logo_url.data
+        company.slogan = self.slogan.data
+        company.description = self.description.data
+
+        user.username = self.username.data
+        user.email = self.email.data
+        user.password = self.password.data
+        user.company = company
+        user.role = 20
+
+
+        db.session.add(user)
+        db.session.add(company)
+        db.session.commit()
+
+        flash("更新成功", 'success')
+
+        return [user, company]
+
+
 
 
 

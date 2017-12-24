@@ -5,9 +5,13 @@
 <h2>当前简历</h2>
 <p>
     简历文件：  
+    {% if current_user.resume_file_name is none %}
+    无
+    {% else %}
     <a href="{{ url_for("user.resume_file", filename=current_user.resume_file_name) }}">
         {{ current_user.resume_file_name }}
     </a>
+    {% endif %}
 </p>
 
 <form method="POST", action="{{ url_for("user.resume") }}", enctype="multipart/form-data">

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from jobplus.models import db, User
 from jobplus.decorators import admin_required
-from jobplus.forms import AddUserForm
+from jobplus.forms import AddUserForm, AddCompanyForm
 
 
 
@@ -53,7 +53,6 @@ def edit_user(user_id):
 
 
 
-
 @admin.route("/user/adduser", methods=['GET', 'POST'])
 @admin_required
 def add_user():
@@ -63,6 +62,18 @@ def add_user():
         return redirect(url_for("admin.user"))
     else:
         return render_template("admin/add_user.html", form=form)
+
+
+
+@admin.route("/user/addcompany", methods=['GET', 'POST'])
+@admin_required
+def add_company():
+    form = AddCompanyForm()
+    if form.validate_on_submit():
+        form.add_company()
+        return redirect(url_for("admin.user"))
+    else:
+        return render_template("admin/add_company.html", form=form)
 
 
 
