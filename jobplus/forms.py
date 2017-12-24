@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+#from flask_wtf.file import FileField
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField, IntegerField, FileField
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
 from flask import flash
@@ -29,7 +30,6 @@ class UserProfileForm(FlaskForm):
     email = StringField("邮箱", validators=[Required(), Email()])
     phone = IntegerField("手机号", validators=[Required(), NumberRange(min=10000000000, max=19999999999, message="无效手机号")])
     working_years = IntegerField("工作年限", validators=[Required(), NumberRange(min=1, max=99)])
-    resume = FileField("简历")
     submit = SubmitField("保存")
 
 
@@ -96,6 +96,12 @@ class AddUserForm(FlaskForm):
         flash("添加成功", 'success')
         return user
 
+
+
+
+class UploadResumeForm(FlaskForm):
+    resume = FileField("简历", validators=[Required()])
+    submit = SubmitField("提交")
 
 
 

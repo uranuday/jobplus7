@@ -1,0 +1,23 @@
+{% extends "user/user_base.html" %}
+
+
+{% block user %}
+<h2>当前简历</h2>
+<p>
+    简历文件：  
+    <a href="{{ url_for("user.resume_file", filename=current_user.resume_file_name) }}">
+        {{ current_user.resume_file_name }}
+    </a>
+</p>
+
+<form method="POST", action="{{ url_for("user.resume") }}", enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <h2>上传简历</h2>
+    <div class="form-group">
+        {{ form.resume.label }}{{ form.resume }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+
+</form>    
+
+{% endblock %}
