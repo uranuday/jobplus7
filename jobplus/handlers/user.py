@@ -14,7 +14,7 @@ user = Blueprint("user", __name__, url_prefix="/user")
 @user_required
 def index():
 
-    return render_template("user/index.html")
+    return redirect(url_for("user.profile"))
 
 
 

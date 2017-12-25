@@ -48,14 +48,6 @@ def logout():
     return redirect(url_for(".index"))
 
 
-
-
-@front.route("/companies")
-def company():
-    return render_template("companies.html")
-
-
-
 @front.route("/jobs")
 def job():
     return render_template("jobs.html")

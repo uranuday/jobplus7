@@ -12,7 +12,7 @@ admin = Blueprint("admin", __name__, url_prefix="/admin")
 @admin.route('/')
 @admin_required
 def index():
-    return render_template("admin/index.html")
+    return redirect(url_for("admin.user"))
 
 
 @admin.route("/user")

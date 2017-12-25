@@ -11,14 +11,21 @@ company = Blueprint("company", __name__, url_prefix="/company")
 
 
 @company.route("/")
-@company_required
 def index():
 
     return render_template("company/index.html")
 
 
 
-@company.route("/profile", methods=['GET', 'POST'])
+@company.route("/admin")
+@company_required
+def admin():
+    return redirect(url_for("company.profile"))
+
+
+
+#更新企业信息
+@company.route("/admin/profile", methods=['GET', 'POST'])
 @company_required
 def profile():
 
@@ -32,7 +39,7 @@ def profile():
 
 
 @company.route("/<company_id>")
-def company_detail(company_id):
+def detail(company_id):
     company = Company.query.get_or_404(company_id)
     return render_template("company/company_detail.html", company=company)
 
