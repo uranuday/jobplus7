@@ -11,8 +11,14 @@ front = Blueprint('front', __name__)
 
 @front.route('/')
 def index():
-    companies = Company.query.all()
-    return render_template('index.html', companies=companies)
+    page = request.args.get('page', default=1, type=int)
+    pagination = Company.query.paginate(
+            page = page,
+            per_page = current_app.config['DEFAULT_PER_PAGE'],
+            error_out = False
+            )
+
+    return render_template('index.html', pagination=pagination)
 
 
 
