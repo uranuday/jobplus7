@@ -13,7 +13,7 @@ def iter_companies():
         companies = json.load(f)
     for company in companies:
         yield Company(
-                name = company['name'],
+                company_name = company['name'],
                 logo_url = company['logo_url'],
                 description = company['description'],
                 slogan = company['slogan'],
