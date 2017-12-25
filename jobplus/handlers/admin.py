@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for
 from jobplus.models import db, User
 from jobplus.decorators import admin_required
-from jobplus.forms import AddUserForm, AddCompanyForm
+from jobplus.forms import AddUserForm, AddCompanyForm, EditUserForm, EditCompanyForm
 
 
 
@@ -44,12 +44,26 @@ def enable_user(user_id):
 
 
 
-@admin.route("/user/<int:user_id>/edit")
+@admin.route("/user/<int:user_id>/edit", methods=['GET', 'POST'])
 @admin_required
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
-
-    return render_template("admin/edit_user.html", user=user)
+    if user.role == user.ROLE_COMPANY:
+        form = EditCompanyForm(obj=user.company)
+        form.username.data = user.username
+        form.email.data = user.email
+        if form.validate_on_submit():
+            form.update_company_user(user)
+            return redirect(url_for("admin.user"))
+        else:
+            return render_template("admin/edit_user.html", form=form, user=user)
+    else:
+        form = EditUserForm(obj=user)
+        if form.validate_on_submit():
+            form.update_user(user)
+            return redirect(url_for("admin.user"))
+        else:
+            return render_template("admin/edit_user.html", form=form, user=user)
 
 
 
@@ -70,7 +84,7 @@ def add_user():
 def add_company():
     form = AddCompanyForm()
     if form.validate_on_submit():
-        form.add_company()
+        form.add_company_user()
         return redirect(url_for("admin.user"))
     else:
         return render_template("admin/add_company.html", form=form)

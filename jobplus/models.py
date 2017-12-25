@@ -62,7 +62,7 @@ class Company(Base):
     __tablename__ = 'company'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), unique=True, index=True, nullable=False)
+    company_name = db.Column(db.String(128), unique=True, index=True, nullable=False)
     location = db.Column(db.String(128))
     logo_url = db.Column(db.String(128))
     website = db.Column(db.String(64),)
@@ -76,7 +76,7 @@ class Job(Base):
     __tablename__ = 'job'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128), unique=True, index=True, nullable=False)
+    Job_title = db.Column(db.String(128), unique=True, index=True, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
     experience = db.Column(db.String(32))
     location = db.Column(db.String(128))

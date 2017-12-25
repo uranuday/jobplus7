@@ -24,14 +24,24 @@ class LoginForm(FlaskForm):
             raise ValidationError("密码错误")
 
 
-
-class UserProfileForm(FlaskForm):
-    name = StringField("姓名", validators=[Required()])
+#用户基表单
+class UserBaseForm(FlaskForm):
+    username = StringField("用户名", validators=[Required(), Length(3,32)])
     email = StringField("邮箱", validators=[Required(), Email()])
+    password = PasswordField("密码", validators=[Required(), Length(6, 24)])
+    repeat_password = PasswordField("重复密码", validators=[Required(), EqualTo('password', "密码不匹配")])
+    name = StringField("姓名", validators=[Required(), Length(1, 30)])
     phone = IntegerField("手机号", validators=[Required(), NumberRange(min=10000000000, max=19999999999, message="无效手机号")])
-    working_years = IntegerField("工作年限", validators=[Required(), NumberRange(min=1, max=99)])
     submit = SubmitField("保存")
 
+
+    def add_user(self):
+        user = User()
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        flash("添加成功", 'success')
+        return user
 
 
     def update_user(self, user):
@@ -43,8 +53,9 @@ class UserProfileForm(FlaskForm):
 
 
 
-class CompanyProfileForm(FlaskForm):
-    name = StringField("名称", validators=[Required(), Length(0, 128)])
+#企业基表单
+class CompanyBaseForm(FlaskForm):
+    company_name = StringField("公司名称名称", validators=[Required(), Length(0, 128)])
     location = StringField("地址", validators=[Required(), Length(0, 128)])
     logo_url = StringField("Logo URL", validators=[Length(0, 128)])
     website = StringField("Web Site", validators=[Length(0, 64)])
@@ -53,11 +64,20 @@ class CompanyProfileForm(FlaskForm):
     submit = SubmitField("保存")
 
 
+    def add_company(self):
+        company = Company()
+        self.populate_obj(company)
+        db.session.add(company)
+        db.session.commit()
+        flash("添加成功", 'success')
+        return user
+
 
     def update_company(self, company):
         self.populate_obj(company)
         db.session.add(company)
         db.session.commit()
+    
         flash("更新成功", 'success')
         return company
 
@@ -66,13 +86,21 @@ class CompanyProfileForm(FlaskForm):
 
 
 
-class AddUserForm(FlaskForm):
-    username = StringField("用户名", validators=[Required(), Length(3,32)])
-    email = StringField("邮箱", validators=[Required(), Email()])
-    password = PasswordField("密码", validators=[Required(), Length(6, 24)])
-    repeat_password = PasswordField("重复密码", validators=[Required(), EqualTo('password', "密码不匹配")])
-    name = StringField("姓名", validators=[Required(), Length(1, 30)])
-    phone = IntegerField("手机号", validators=[Required(), NumberRange(min=10000000000, max=19999999999, message="无效手机号")])
+class UserProfileForm(UserBaseForm):
+    password = None
+    repeat_password = None
+
+
+
+
+class CompanyProfileForm(CompanyBaseForm):
+    pass
+
+
+
+
+class AddUserForm(UserBaseForm):
+
     submit = SubmitField("添加")
 
 
@@ -88,17 +116,6 @@ class AddUserForm(FlaskForm):
 
 
 
-    def add_user(self):
-        user = User()
-        self.populate_obj(user)
-        db.session.add(user)
-        db.session.commit()
-        flash("添加成功", 'success')
-        return user
-
-
-
-
 class UploadResumeForm(FlaskForm):
     resume = FileField("简历", validators=[Required()])
     submit = SubmitField("提交")
@@ -106,18 +123,9 @@ class UploadResumeForm(FlaskForm):
 
 
 
-class AddCompanyForm(FlaskForm):
-    username = StringField("用户名", validators=[Required(), Length(3,32)])
-    email = StringField("邮箱", validators=[Required(), Email()])
-    password = PasswordField("密码", validators=[Required(), Length(6, 24)])
-    repeat_password = PasswordField("重复密码", validators=[Required(), EqualTo('password', "密码不匹配")])
-    company_name = StringField("公司名称", validators=[Required(), Length(1, 120)])
-    website = StringField("企业网站", validators=[Required(), Length(1, 64)])
-    logo_url = StringField("LOGO链接", validators=[Required(), Length(1, 120)])
-    slogan = StringField("Slogan", validators=[Required(), Length(1, 120)])
-    description = TextAreaField("企业介绍", validators=[Required(), Length(10, 2000)])
-    submit = SubmitField("添加")
+class AddCompanyForm(UserBaseForm, CompanyBaseForm):
 
+    submit = SubmitField("添加")
 
 
     def validate_username(self, field):
@@ -131,26 +139,19 @@ class AddCompanyForm(FlaskForm):
 
 
     def validate_company_name(self, field):
-        if Company.query.filter_by(name=field.data).first():
+        if Company.query.filter_by(company_name=field.data).first():
             raise ValidationError("公司已存在")
 
 
-    def add_company(self):
+    def add_company_user(self):
         company = Company()
         user = User()
 
-        company.name = self.company_name.data
-        company.website = self.website.data
-        company.logo_url = self.logo_url.data
-        company.slogan = self.slogan.data
-        company.description = self.description.data
 
-        user.username = self.username.data
-        user.email = self.email.data
-        user.password = self.password.data
+        self.populate_obj(company)
+        self.populate_obj(user)
         user.company = company
-        user.role = 20
-
+        user.role = user.ROLE_COMPANY
 
         db.session.add(user)
         db.session.add(company)
@@ -164,5 +165,31 @@ class AddCompanyForm(FlaskForm):
 
 
 
+
+class EditUserForm(UserBaseForm):
+    pass
+
+
+
+class EditCompanyForm(UserBaseForm, CompanyBaseForm):
+    phone = None
+    name = None
+    submit = SubmitField("保存")
+
+
+    def update_company_user(self, user):
+        company = user.company
+
+
+        self.populate_obj(company)
+        self.populate_obj(user)
+
+        db.session.add(user)
+        db.session.add(company)
+        db.session.commit()
+
+        flash("更新成功", 'success')
+
+        return [user, company]
 
 
