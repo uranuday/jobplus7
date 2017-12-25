@@ -7,13 +7,32 @@
 
 
 {% block body %}
+<h4 class="horizon">企业列表</h4>
+<div class="company-list">
+    {% for company in companies %}
+    <div class="row horizon">
+        <div class="col-md-9">
+            <div class="pull-left">
+                <a href="/company/{{ company.id }}">
+                <img width="80" height="80" alt="logo" src={{ company.logo_url }}></img>
+                </a>
+            </div>
+            <div style="padding-left: 10px;">
+                <h4><a href="/company/{{company.id}}">{{ company.company_name }}</a></h4>
+                <a href="{{ company.website }}">{{ company.website }}</a>
+                <p>{{ company.slogan }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <ul style="list-style: none;">
+                <li><span class="glyphicon glyphicon-user"></span><a href="#"> {{ company.jobs|length }}</a><span>个职位在招</span></li>
+                <li><span class="glyphicon glyphicon-globe"></span> {{ company.location }}</li>
+            </ul>
+        </div>
 
+    </div>
+    {% endfor %}
 
-<h1>Company</h1>
-<p>developing</p>
-
-
-
-
+</div>
 {% endblock %}
 

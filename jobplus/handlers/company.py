@@ -13,7 +13,8 @@ company = Blueprint("company", __name__, url_prefix="/company")
 @company.route("/")
 def index():
 
-    return render_template("company/index.html")
+    companies = Company.query.all()
+    return render_template("company/index.html", companies=companies)
 
 
 
