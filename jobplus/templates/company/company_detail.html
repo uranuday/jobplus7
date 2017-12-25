@@ -2,11 +2,32 @@
 
 
 
-{% block title %}{{ company.name }}{% endblock %}
+{% block title %}企业详情{% endblock %}
 
 
 {% block body %}
 
 <h1>{{ company.name }}</h1>
 
+
+<div class="row">
+    <div class="col-md-2">
+        <img width="120" height="120" alt="logo" src="{{ company.logo_url }}"></img>
+    </div>
+    <div class="col-md-10">
+        <h3>{{ company.company_name }}</h3>
+        <p>{{ company.slogan }}</p>
+        <a href="{{ company.website }}">{{ company.website }}</a>
+    </div>
+
+</div>
+<ul class="nav nav-tabs padding-top">
+    <li {% if tab == "company" %}class="active"{% endif %}><a href="{{ url_for("company.detail", company_id=company.id) }}">公司信息</a></li>
+    <li {% if tab == "job" %}class="active"{% endif %}><a href="{{ url_for("company.jobs", company_id=company.id) }}">招聘职位</a></li>
+
+</ul>
+{% block content %}
+<h4 style="padding-top:12px;">关于我们</h4>
+<p>{{ company.description }}</p>
+{% endblock %}
 {% endblock %}
