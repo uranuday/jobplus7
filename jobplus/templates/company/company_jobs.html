@@ -1,0 +1,11 @@
+{% extends "company/company_detail.html" %}
+
+
+{% block content %}
+<h4 style="padding-top:12px;">招聘职位</h4>
+{% for job in company.jobs %}
+<p>{{ job.job_title }}</p>
+
+{% endfor %}
+
+{% endblock %}

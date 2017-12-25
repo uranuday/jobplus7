@@ -46,7 +46,10 @@ def profile():
 @company.route("/<company_id>")
 def detail(company_id):
     company = Company.query.get_or_404(company_id)
-    return render_template("company/company_detail.html", company=company)
+    return render_template("company/company_detail.html", company=company, tab="company")
 
 
-        
+@company.route("/<company_id>/jobs")
+def jobs(company_id):
+    company = Company.query.get_or_404(company_id)
+    return render_template("company/company_jobs.html", company=company, tab="job")
