@@ -1,0 +1,9 @@
+{% extends "user/user_base.html" %}
+{% from "macros.html" import render_form %}
+
+
+{% block user %}
+<div class="form">
+    {{ render_form(form, url_for("user.profile")) }}
+</div>
+{% endblock %}

@@ -7,7 +7,23 @@
 
 
 .form {
-    width: 400px;
-    margin: 0 auto;
+    max-width: 400px;
+    margin: 0 auto auto 20px;
 }
+
+.command {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 0;
+}
+
+a,
+a:hover,
+a:visited{
+    text-decoration: none !important;
+}
+
+
+
+
+
 

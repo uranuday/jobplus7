@@ -22,18 +22,22 @@ class User(Base, UserMixin):
     ROLE_ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True, index=True, nullable=False)
+    username = db.Column(db.String(32), unique=True, index=True, nullable=False)
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
     # 保存简历的文件名
-    resume = db.Column(db.String(32))
+    resume_file_name = db.Column(db.String(64))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     company = db.relationship("Company", uselist=False)
+    name = db.Column(db.String(32))
+    phone = db.Column(db.Integer)
+    working_years = db.Column(db.SmallInteger)
+    is_disable = db.Column(db.Boolean, default=False)
 
 
     def __repr__(self):
-        return '<User:{}>'.format(self.name)
+        return '<User:{}>'.format(self.username)
 
     @property
     def password(self):
@@ -59,11 +63,11 @@ class Company(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), unique=True, index=True, nullable=False)
-    location = db.Column(db.String(32), nullable=False)
-    logo_url = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(128))
+    logo_url = db.Column(db.String(128))
     website = db.Column(db.String(64),)
-    slogan = db.Column(db.String(32), nullable=False)
-    description = db.Column(db.String(128))
+    slogan = db.Column(db.String(128))
+    description = db.Column(db.String(2048), nullable=False)
 
     def __repr__(self):
         return '<Company: {}>'.format(self.name)
@@ -75,10 +79,10 @@ class Job(Base):
     name = db.Column(db.String(128), unique=True, index=True, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
     experience = db.Column(db.String(32))
-    location = db.Column(db.String(32))
-    description = db.Column(db.String(1024))
-    requirement = db.Column(db.String(1024))
-    status = db.Column(db.Boolean, default=True)
+    location = db.Column(db.String(128))
+    description = db.Column(db.String(2048))
+    requirement = db.Column(db.String(2048))
+    is_online = db.Column(db.Boolean, default=True)
     company = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     applicant = db.relationship('User', secondary="application", backref='applied_jobs')
@@ -99,7 +103,7 @@ class Application(Base):
 
 
     def __repr__(self):
-        return "<Application: {} - {}>".format(self.job.name, self.user.name)
+        return "<Application: {} - {}>".format(self.job.name, self.user.username)
 
 
 

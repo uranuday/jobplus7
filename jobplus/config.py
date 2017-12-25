@@ -1,5 +1,8 @@
 class BaseConfig(object):
     SECRET_KEY = '!!@@'
+    UPLOAD_FOLDER = './uploads/'
+    ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'pdf'])
+    MAX_CONTENT_LENGTH = 5 * 1024 * 1024
 
 
 

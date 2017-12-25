@@ -1,0 +1,71 @@
+{% extends "admin/admin_base.html" %}
+
+
+{% block admin %}
+    <div class="command">
+        <a href="{{ url_for("admin.add_user") }}" type="button" class="btn btn-sm btn-primary">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            添加用户
+        </a>
+        <a href="{{ url_for("admin.add_company") }}" type="button" class="btn btn-sm btn-primary">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            添加企业
+        </a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>username</th>
+                <th>邮箱</th>
+                <th>用户类型</th>
+                <th>姓名</th>
+                <th>禁用</th>
+                <th>手机号</th>
+                <th>企业名称</th>
+                <th>企业网站</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.is_disable }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.company.name }}</td>
+                <td>{{ user.company.website }}</td>
+                <td>
+                    <div class="btn-gropu" role="group">
+                        <a href="{{ url_for("admin.edit_user", user_id=user.id) }}" type="button" class="btn btn-default" title="编辑">
+                            <span class="glyphicon glyphicon-pencil" title="编辑" aria-hidden="true"></span>
+                        </a>
+                        {% if not user.is_disable %}
+                        <a href="{{ url_for("admin.disable_user", user_id=user.id) }}" type="button" class="btn btn-default" title="禁用">
+                            <span class="glyphicon glyphicon-ban-circle" title="禁用" aria-hidden="true"></span>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for("admin.enable_user", user_id=user.id) }}" type="button" class="btn btn-default" title="启用">
+                            <span class="glyphicon glyphicon-ok-circle" title="启用" aria-hidden="true"></span>
+                        </a>
+                        {% endif %}
+
+
+
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+
+        </tbody>
+    </table>
+
+
+{% endblock %}
