@@ -14,7 +14,7 @@
     {% endif %}
 </p>
 
-<form method="POST", action="{{ url_for("user.resume") }}", enctype="multipart/form-data">
+<form method="POST" action="{{ url_for("user.resume") }}" enctype="multipart/form-data">
     {{ form.csrf_token }}
     <h2>上传简历</h2>
     <div class="form-group">

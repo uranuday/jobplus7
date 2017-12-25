@@ -30,8 +30,8 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for("front.company") }}">公司</a></li>
-                    <li><a href="{{ url_for("front.job") }}">职位</a></li>
+                    <li><a href="{{ url_for("company.index") }}">公司</a></li>
+                    <li><a href="{{ url_for("job.index") }}">职位</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     {% if not current_user.is_authenticated %}
@@ -43,9 +43,9 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="username">{{ current_user.username }}</span><span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             {% if current_user.is_admin %}
-                            <li><a href="{{ url_for("admin.user") }}">管理页面</a></li>
+                            <li><a href="{{ url_for("admin.index") }}">管理页面</a></li>
                             {% elif current_user.is_company %}
-                            <li><a href="{{ url_for("company.index") }}">公司主页</a></li>
+                            <li><a href="{{ url_for("company.admin") }}">公司主页</a></li>
                             {% else %}
                             <li><a href="{{ url_for("user.index") }}">个人主页</a></li>
                             {% endif %}
