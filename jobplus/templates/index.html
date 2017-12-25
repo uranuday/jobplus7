@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% from "macros.html" import render_pagination %}
 
 {% block title %}Home{% endblock %}
 
 {% block body %}
 
 <div class="row">
-    {% for company in companies %}
+    {% for company in pagination.items %}
     <div class="col-sm-6 col-md-4 col-lg-3">
         <div class="thumbnail" style="height:336px;">
             <a href="/company/{{ company.id }}">
@@ -27,5 +28,6 @@
     </div>
     {% endfor %}
 </div>
+{{ render_pagination(pagination, 'front.index') }}
 
 {% endblock %}

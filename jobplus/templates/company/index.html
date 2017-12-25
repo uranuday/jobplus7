@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import render_pagination %}
 
 
 {% block title %}Company{% endblock %}
@@ -9,7 +9,7 @@
 {% block body %}
 <h4 class="horizon">企业列表</h4>
 <div class="company-list">
-    {% for company in companies %}
+    {% for company in pagination.items %}
     <div class="row horizon">
         <div class="col-md-9">
             <div class="pull-left">
@@ -34,5 +34,6 @@
     {% endfor %}
 
 </div>
+{{ render_pagination(pagination, 'company.index') }}
 {% endblock %}
 

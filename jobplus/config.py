@@ -3,6 +3,7 @@ class BaseConfig(object):
     UPLOAD_FOLDER = './uploads/'
     ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'pdf'])
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024
+    DEFAULT_PER_PAGE = 12
 
 
 

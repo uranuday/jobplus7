@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect
+from flask import Blueprint, render_template, url_for, redirect, request, current_app
 from flask_login import current_user
 from jobplus.forms import CompanyProfileForm
 from jobplus.decorators import company_required
@@ -12,9 +12,13 @@ company = Blueprint("company", __name__, url_prefix="/company")
 
 @company.route("/")
 def index():
-
-    companies = Company.query.all()
-    return render_template("company/index.html", companies=companies)
+    page = request.args.get('page', default=1, type=int)
+    pagination = Company.query.paginate(
+            page = page,
+            per_page = current_app.config['DEFAULT_PER_PAGE'],
+            error_out = False
+            )
+    return render_template("company/index.html", pagination=pagination)
 
 
 
