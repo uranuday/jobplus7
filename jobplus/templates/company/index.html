@@ -12,16 +12,18 @@
     {% for company in pagination.items %}
     <div class="row horizon">
         <div class="col-md-9">
-            <div class="pull-left">
+            <div class="media">
+            <div class="media-left">
                 <a href="/company/{{ company.id }}">
                 <img width="80" height="80" alt="logo" src={{ company.logo_url }}></img>
                 </a>
             </div>
-            <div style="padding-left: 10px;">
+            <div class="media-body">
                 <h4><a href="/company/{{company.id}}">{{ company.company_name }}</a></h4>
                 <a href="{{ company.website }}">{{ company.website }}</a>
                 <p>{{ company.slogan }}</p>
             </div>
+        </div>
         </div>
         <div class="col-md-3">
             <ul style="list-style: none;">
