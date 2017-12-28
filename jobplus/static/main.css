@@ -27,10 +27,20 @@ a:visited{
 }
 
 
-.padding-top {
+.padding-top: {
     padding-top: 50px;
 }
 
 
+.text-muted: {
+    color: #777;
+}
+
+a.jobname: {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    line-height: 1;
+}
 
 
