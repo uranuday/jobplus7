@@ -76,7 +76,7 @@ class Job(Base):
     __tablename__ = 'job'
 
     id = db.Column(db.Integer, primary_key=True)
-    Job_title = db.Column(db.String(128), unique=True, index=True, nullable=False)
+    job_title = db.Column(db.String(128), index=True, nullable=False)
     salary = db.Column(db.Integer, nullable=False)
     experience = db.Column(db.String(32))
     location = db.Column(db.String(128))

@@ -21,6 +21,21 @@ def iter_companies():
                 )
 
 
+def iter_jobs():
+    with open(os.path.join(os.path.dirname(__file__), '..', 'datas', 'job.json')) as f:
+        jobs = json.load(f)
+    for job in jobs:
+        for i in range(1,6):
+            company = Company.query.get(i)
+            yield Job(
+                    job_title = job['job_title'],
+                    location = job['location'],
+                    description = fake.sentence(),
+                    salary = job['salary'],
+                    experience = job['experience'],
+                    company = company
+                    )
+
 
 def iter_users():
     company = Company.query.get(1)
@@ -54,9 +69,11 @@ def create_db():
     for company in iter_companies():
         db.session.add(company)
 
+    for job in iter_jobs():
+        db.session.add(job)
+
     for user in iter_users():
         db.session.add(user)
-
 
     try:
         db.session.commit()
