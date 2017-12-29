@@ -27,7 +27,7 @@ a:visited{
 }
 
 
-.padding-top: {
+.padding-top {
     padding-top: 50px;
 }
 
@@ -36,7 +36,7 @@ a:visited{
     color: #777;
 }
 
-a.jobname: {
+a.jobname {
     font-size: 16px;
     color: #333;
     font-weight: bold;
@@ -44,3 +44,14 @@ a.jobname: {
 }
 
 
+.list-more{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+.list-more-btn {
+    padding: 10px 138px;
+    color: #5cb85c;
+    background-color: #fff;
+}
