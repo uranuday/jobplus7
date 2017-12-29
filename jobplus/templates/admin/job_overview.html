@@ -1,0 +1,40 @@
+{% extends "/admin/admin_base.html" %}
+
+
+{% block admin %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>职位名称</th>
+            <th>公司</th>
+            <th>是否在线</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in jobs %}
+        <tr>
+            <td>{{ job.id }}</td>
+            <td><a href="{{ url_for("job.detail", job_id=job.id) }}">{{ job.job_title }}</a></td>
+            <td>{{ job.company.company_name }}</td>
+            <td {% if not job.is_online %}style="color:red;"{% endif %}>{{ job.is_online }}</td>
+            <td>
+                <div class="dropdown">
+                    <p id="dropdownMenu1" data-toggle="dropdown"><span class="caret"></span></p>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMeun1">
+                        {% if job.is_online %}
+                        <li><a href="{{ url_for("admin.disable_job", job_id=job.id) }}">disable</a></li>
+                        {% endif %}
+                        {% if not job.is_online %}
+                        <li><a href="{{ url_for("admin.enable_job", job_id=job.id) }}">enable</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for("admin.edit_job", job_id=job.id) }}">edit</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

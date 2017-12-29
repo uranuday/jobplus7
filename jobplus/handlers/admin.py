@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from jobplus.models import db, User
+from jobplus.models import db, User, Job
 from jobplus.decorators import admin_required
 from jobplus.forms import AddUserForm, AddCompanyForm, EditUserForm, EditCompanyForm
 
@@ -90,4 +90,40 @@ def add_company():
         return render_template("admin/add_company.html", form=form)
 
 
+
+@admin.route("/job")
+@admin_required
+def job():
+    jobs = Job.query.all()[0:12]
+
+    return render_template("/admin/job_overview.html", jobs=jobs)
+
+
+
+@admin.route("/job/<int:job_id>/disable")
+@admin_required
+def disable_job(job_id):
+    job = Job.query.get_or_404(job_id)
+    job.is_online = False
+    db.session.add(job)
+    db.session.commit()
+    return redirect(url_for("admin.job"))
+
+
+
+@admin.route("/job/<int:job_id>/enable")
+@admin_required
+def enable_job(job_id):
+    job = Job.query.get_or_404(job_id)
+    job.is_online = True
+    db.session.add(job)
+    db.session.commit()
+    return redirect(url_for("admin.job"))
+
+
+@admin.route("/job/<int:job_id>/edit")
+@admin_required
+def edit_job(job_id):
+    job = Job.query.get_or_404(job_id)
+    return render_template("admin/edit_job.html", job=job)
 
