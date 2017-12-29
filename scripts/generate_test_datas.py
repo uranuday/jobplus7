@@ -27,10 +27,14 @@ def iter_jobs():
     for job in jobs:
         for i in range(1,6):
             company = Company.query.get(i)
+            L = 6   #生成句子的数量
+            s = fake.sentences(L)   #生成句子
+            dic = {i:s[i] for i in range(L)}    #将句子存入字典
+            j = json.dumps(dic)  #转成json
             yield Job(
                     job_title = job['job_title'],
                     location = job['location'],
-                    description = fake.sentence(),
+                    description = j,
                     salary = job['salary'],
                     exp_requirement = job['exp_requirement'],
                     edu_requirement = job['edu_requirement'],
