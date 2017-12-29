@@ -37,8 +37,7 @@ a:visited{
 }
 
 a.jobname {
-    font-size: 16px;
-    color: #333;
+    font-size: 18px;
     font-weight: bold;
     line-height: 1;
 }
