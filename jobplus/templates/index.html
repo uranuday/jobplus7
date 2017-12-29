@@ -8,7 +8,7 @@
 <div class="jumbotron">
     <div class="container">
     <h1>Jobplus</h1>
-    <p>Find You Mazing Job at Jobplus</p>
+    <p>Find Your Mazing Job at Jobplus</p>
 </div>
 </div>
 {% endblock %}
@@ -25,11 +25,17 @@
     <div class="col-sm-6 col-md-4 col-lg-3">
         <div class="panel panel-default" style="height:300px; padding-left:12px;">
             <h4>
-                <a href="#">{{ job.job_title }}</a>
+                <a href="{{ url_for("job.detail", job_id=job.id) }}">{{ job.job_title }}</a>
             </h4>
-            <h3>{{ job.company.company_name }}</h3>
+            <a href="{{ url_for("company.detail", company_id=job.company.id) }}">
+                <h3 style="color: #333;">{{ job.company.company_name }}</h3>
+            </a>
             <p>{{ job.location }}</p>
-            <p><span style="color:#ff8000; font-size:16px;">{{ job.salary }}</span> {{ job.exp_requirement }}  {{ job.edu_requirement }}</p>
+            <p>
+                <span style="color:#ff8000; font-size:16px;">{{ job.salary }}</span>
+                {{ job.exp_requirement }} 
+                {{ job.edu_requirement }}
+            </p>
             <p style="padding-top:18px;">发布时间：{{ job.updated_at|timesince }}</p>
         </div>
     </div>

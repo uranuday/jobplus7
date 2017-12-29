@@ -15,9 +15,9 @@
     <div class="row horizon">
         <!-- 职位信息 -->
         <div class="col-md-6">
-            <a href="#" class="jobname">{{ job.job_title }}</a>
-            <span class="text-muted">[{{ job.location }}]</span><br>
-            <strong>{{ job.salary }}</strong> / {{ job.exp_requirement }} / {{ job.edu_requirement }}
+            <a href="{{ url_for("job.detail", job_id=job.id) }}" class="jobname">{{ job.job_title }}</a>
+            <p><strong>{{ job.salary }}</strong> / {{ job.exp_requirement }} / {{ job.edu_requirement }}</p>
+            <p class="text-muted">[{{ job.location }}]</p>
         </div>
         <!-- 公司信息 -->
         <div class="col-md-4">

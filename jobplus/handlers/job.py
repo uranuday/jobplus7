@@ -19,3 +19,9 @@ def index():
             )
 
     return render_template("job/index.html", pagination=pagination)
+
+
+@job.route("/<job_id>")
+def detail(job_id):
+
+    return render_template("/job/job_detail.html")
