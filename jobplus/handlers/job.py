@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, current_app
 from jobplus.models import Job
-
+import json
 
 
 
@@ -23,5 +23,6 @@ def index():
 
 @job.route("/<job_id>")
 def detail(job_id):
-
-    return render_template("/job/job_detail.html")
+    job = Job.query.get(job_id)
+    job_desc = json.loads(job.description).values()
+    return render_template("/job/job_detail.html", job=job, job_desc=job_desc)
