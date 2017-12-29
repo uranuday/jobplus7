@@ -2,7 +2,7 @@ from flask import Flask
 from jobplus.models import db, User
 from jobplus.config import configs
 from flask_login import LoginManager
-
+import datetime
 
 
 
@@ -33,6 +33,24 @@ def register_extensions(app):
 
 
 
+def register_filters(app):
+
+    @app.template_filter()
+    def timesince(value):
+        now = datetime.datetime.utcnow()
+        delta = now - value
+        if delta.days > 365:
+            return '{}年前'.format(delta.days // 365)
+        if delta.days > 30:
+            return '{}月前'.format(delta.days // 30)
+        if delta.days > 0:
+            return '{}天前'.format(delta.days)
+        if delta.seconds > 3600:
+            return '{}小时前'.format(delta.seconds // 3600)
+        if delta.seconds > 60:
+            return '{}分钟前'.format(delta.seconds // 60)
+        return '刚刚'
+
 
 
 def create_app(config):
@@ -41,6 +59,7 @@ def create_app(config):
 
     register_blueprint(app)
     register_extensions(app)
+    register_filters(app)
 
     return app
 

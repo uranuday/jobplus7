@@ -36,12 +36,28 @@ a:visited{
     color: #777;
 }
 
-a.jobname {
-    font-size: 16px;
-    color: #333;
+.jobname {
+    font-size: 18px;
     font-weight: bold;
+    color: #333;
     line-height: 1;
 }
+
+.jobname:hover{
+    text-decoration: underline;
+}
+
+
+.company-name {
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.company-name:hover{
+    text-decoration: underline;
+}
+
 
 
 .list-more{

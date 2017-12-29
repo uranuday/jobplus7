@@ -2,9 +2,25 @@
 
 
 {% block content %}
-<h4 style="padding-top:12px;">招聘职位</h4>
+<div class="page-header">
+    <h4>招聘职位</h4>
+</div>
 {% for job in company.jobs %}
-<p>{{ job.job_title }}</p>
+<div class="row horizon">
+    <div class="col-md-9">
+        <a href="{{  url_for("job.detail", job_id=job.id)}}">
+            <h4 class="jobname">{{ job.job_title }}</h4>
+        </a>
+        <p style="color: #ff8000;">{{ job.salary }}</p>
+        <p>{{ job.exp_requirement }}  {{ job.edu_requirement }}</p>
+        <p>{{ job.location }}</p>
+
+    </div>
+    <div class="col-md-3 hidden-xs">
+        <p style="text-align: right; padding-top:20px;">{{ job.updated_at|timesince }}</p>
+
+    </div>
+</div>
 
 {% endfor %}
 
