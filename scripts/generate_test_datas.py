@@ -32,7 +32,8 @@ def iter_jobs():
                     location = job['location'],
                     description = fake.sentence(),
                     salary = job['salary'],
-                    experience = job['experience'],
+                    exp_requirement = job['exp_requirement'],
+                    edu_requirement = job['edu_requirement'],
                     company = company
                     )
 

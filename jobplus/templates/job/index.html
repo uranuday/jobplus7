@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% from "macros.html" import render_pagination %}
 
 
 {% block title %}Job{% endblock %}
@@ -7,13 +7,31 @@
 
 
 {% block body %}
+<div class="page-header">
+    <h1>职位列表</h1>
+</div>
+{% for job in pagination.items %}
+<div class="job-list">
+    <div class="row horizon">
+        <!-- 职位信息 -->
+        <div class="col-md-6">
+            <a href="#" class="jobname">{{ job.job_title }}</a>
+            <span class="text-muted">[{{ job.location }}]</span><br>
+            <strong>{{ job.salary }}</strong> / {{ job.exp_requirement }} / {{ job.edu_requirement }}
+        </div>
+        <!-- 公司信息 -->
+        <div class="col-md-4">
+            <a href="{{url_for("company.detail", company_id=job.company.id)}}">{{ job.company.company_name }}</a>
+            <p>{{ job.company.description }}</p>
+        </div>
+        <!-- 发布时间 -->
+        <div class="col-md-2">
+            <p>{{ job.updated_at }}</p>
+        </div>
 
-
-<h1>Job</h1>
-<p>developing</p>
-
-
-
-
+    </div>
+</div>
+{% endfor %}
+{{ render_pagination(pagination, "job.index") }}
 {% endblock %}
 

@@ -11,7 +11,8 @@ class JobSpider(scrapy.Spider):
                     'job_title': job.xpath('.//h3/a/text()').extract_first().strip(),
                     'salary': job.xpath('.//div/p[@class="condition clearfix"]/span[1]/text()').extract_first(),
                     'location': job.xpath('.//div/p[@class="condition clearfix"]/a/text()').extract_first(),
-                    'experience': job.xpath('.//div/p[@class="condition clearfix"]/span[3]/text()').extract_first()
+                    'edu_requirement': job.xpath('.//div/p[@class="condition clearfix"]/span[2]/text()').extract_first(),
+                    'exp_requirement': job.xpath('.//div/p[@class="condition clearfix"]/span[3]/text()').extract_first()
                     }
 
 
