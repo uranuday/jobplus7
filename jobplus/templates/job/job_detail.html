@@ -39,8 +39,10 @@
 <div>
     <h3>职位描述</h3>
     <ul>
-        {% for desc in job_desc %}
+        {% for desc in job.description.split('\r') %}
+        {% if desc != '' %}
         <li>{{ desc }}</li>
+        {% endif %}
         {% endfor %}
     </ul>
     <h3>职位要求</h3>
