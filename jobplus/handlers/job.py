@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, current_app, flash
-from jobplus.models import Job, Application
+from jobplus.models import db, Job, Application
 import json
 from flask_login import login_required, current_user
 
@@ -33,8 +33,8 @@ def apply(job_id):
     if current_user.resume_file_name is None:
         flash("请上传简历",'warning')
         return redirect(url_for("user.resume"))
-    job = job.query.get_or_404(job_id)
-    application = Application(job_id=job.id, user_id=current.id)
+    job = Job.query.get_or_404(job_id)
+    application = Application(job_id=job.id, user_id=current_user.id)
     db.session.add(application)
     db.session.commit()
     flash("投递成功", 'success')

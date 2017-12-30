@@ -2,7 +2,7 @@ from flask import Blueprint, render_template,url_for, redirect, current_app, fla
 from flask_login import current_user
 from jobplus.forms import UserProfileForm, UploadResumeForm
 from jobplus.decorators import user_required
-from jobplus.models import db, User
+from jobplus.models import db, User, Application
 from werkzeug import secure_filename
 
 
@@ -57,6 +57,11 @@ def resume_file(filename):
 
 
 
+@user.route("/application")
+@user_required
+def application():
+    applications = Application.query.filter_by(user_id=current_user.id)
+    return render_template("user/application.html", applications = applications)
 
 
 

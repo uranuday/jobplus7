@@ -85,7 +85,7 @@ class Job(Base):
     is_online = db.Column(db.Boolean, default=True)
     company = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
-    applicant = db.relationship('User', secondary="application", backref='applied_jobs')
+    applicants = db.relationship('User', secondary="application", backref='applied_jobs')
 
     def __repr__(self):
         return '<Job: {}>'.format(self.name)
