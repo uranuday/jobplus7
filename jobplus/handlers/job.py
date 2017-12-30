@@ -24,5 +24,4 @@ def index():
 @job.route("/<job_id>")
 def detail(job_id):
     job = Job.query.get(job_id)
-    job_desc = job.description.split('\r')
-    return render_template("/job/job_detail.html", job=job, job_desc=job_desc)
+    return render_template("/job/job_detail.html", job=job)
