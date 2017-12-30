@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request, current_app
-from jobplus.models import Job
+from flask import Blueprint, render_template, redirect, url_for, request, current_app, flash
+from jobplus.models import db, Job, Application
 import json
-
+from flask_login import login_required, current_user
 
 
 
@@ -21,8 +21,21 @@ def index():
     return render_template("job/index.html", pagination=pagination)
 
 
-@job.route("/<job_id>")
+@job.route("/<int:job_id>")
 def detail(job_id):
     job = Job.query.get(job_id)
-    job_desc = json.loads(job.description).values()
-    return render_template("/job/job_detail.html", job=job, job_desc=job_desc)
+    return render_template("/job/job_detail.html", job=job)
+
+
+@job.route("/<int:job_id>/apply")
+@login_required
+def apply(job_id):
+    if current_user.resume_file_name is None:
+        flash("请上传简历",'warning')
+        return redirect(url_for("user.resume"))
+    job = Job.query.get_or_404(job_id)
+    application = Application(job_id=job.id, user_id=current_user.id)
+    db.session.add(application)
+    db.session.commit()
+    flash("投递成功", 'success')
+    return redirect(url_for("job.detail", job_id=job.id))

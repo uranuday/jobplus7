@@ -51,6 +51,15 @@ def register_filters(app):
             return '{}分钟前'.format(delta.seconds // 60)
         return '刚刚'
 
+    @app.template_filter()
+    def applycode_to_string(value):
+        if value == 10:
+            return '申请中'
+        if value == 20:
+            return '拒绝'
+        if value == 30:
+            return '面试'
+
 
 
 def create_app(config):
