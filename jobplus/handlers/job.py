@@ -23,9 +23,8 @@ def index():
 
 @job.route("/<int:job_id>")
 def detail(job_id):
-    job = Job.query.get_or_404(job_id)
-    job_desc = json.loads(job.description).values()
-    return render_template("/job/job_detail.html", job=job, job_desc=job_desc)
+    job = Job.query.get(job_id)
+    return render_template("/job/job_detail.html", job=job)
 
 
 @job.route("/<int:job_id>/apply")
