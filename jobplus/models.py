@@ -77,7 +77,7 @@ class Job(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     job_title = db.Column(db.String(128), index=True, nullable=False)
-    salary = db.Column(db.Integer, nullable=False)
+    salary = db.Column(db.String(32), nullable=False)
     exp_requirement = db.Column(db.String(32))
     location = db.Column(db.String(128))
     description = db.Column(db.String(2048))
@@ -91,14 +91,17 @@ class Job(Base):
         return '<Job: {}>'.format(self.name)
 
 class Application(Base):
+    __tablename__ = 'application'
+
     APPLIED = 10    #申请
     REJECTED = 20   #拒绝
-    INTERVIEW = 30  #面试
+    ACCEPTED = 30  #面试
 
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'),primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),primary_key=True)
-    job = db.relationship('Job',uselist=False)
-    user = db.relationship('User',uselist=False)
+    id = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True, index=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), primary_key=True, autoincrement=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id') ,primary_key=True, autoincrement=False)
+    job = db.relationship('Job',uselist=False, backref='applications')
+    user = db.relationship('User',uselist=False, backref='applications')
     status = db.Column(db.SmallInteger, default=APPLIED)
 
 

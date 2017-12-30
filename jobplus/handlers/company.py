@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, url_for, redirect, request, current_app
+from flask import Blueprint, render_template, url_for, redirect, request, current_app, flash, abort
 from flask_login import current_user
 from jobplus.forms import CompanyProfileForm
 from jobplus.decorators import company_required
-from jobplus.models import Company
+from jobplus.models import db, Company, Application
 
 
 
@@ -40,6 +40,43 @@ def profile():
         return redirect(url_for("company.profile"))
     else:
         return render_template("company/profile.html", form=form)
+
+
+@company.route("/admin/application")
+@company_required
+def job_application():
+    jobs = current_user.company.jobs
+    applications = []
+    for job in jobs:
+        applications += job.applications
+    return render_template("company/job_application.html", applications=applications)
+
+
+@company.route("/admin/application/<int:application_id>/accept")
+@company_required
+def accept_application(application_id):
+    application = Application.query.filter_by(id=application_id).first()
+    if application.job not in current_user.company.jobs:
+        return abort(404)
+    application.status = Application.ACCEPTED
+    db.session.add(application)
+    db.session.commit()
+    flash("申请已接受",'success')
+    return redirect(url_for("company.job_application"))
+
+
+@company.route("/admin/application/<int:application_id>/reject")
+@company_required
+def reject_application(application_id):
+    application = Application.query.filter_by(id=application_id).first()
+    if application.job not in current_user.company.jobs:
+        return abort(404)
+    application.status = Application.REJECTED
+    db.session.add(application)
+    db.session.commit()
+    flash("申请已拒绝",'danger')
+    return redirect(url_for("company.job_application"))
+
 
 
 

@@ -4,6 +4,8 @@ from jobplus.forms import UserProfileForm, UploadResumeForm
 from jobplus.decorators import user_required
 from jobplus.models import db, User, Application
 from werkzeug import secure_filename
+#import os
+
 
 
 
@@ -49,18 +51,18 @@ def resume():
         return render_template("user/upload_resume.html", form=form)
 
 
-
+#有待实现简历保护
 @user.route("/resume/<filename>")
 @user_required
 def resume_file(filename):
-    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename)
+    return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
 
 @user.route("/application")
 @user_required
 def application():
-    applications = Application.query.filter_by(user_id=current_user.id)
+    applications = current_user.applications
     return render_template("user/application.html", applications = applications)
 
 
