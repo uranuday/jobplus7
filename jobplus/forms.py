@@ -122,7 +122,7 @@ class AddUserForm(UserBaseForm):
 
 
 class UploadResumeForm(FlaskForm):
-    resume = FileField("简历", validators=[Required()])
+    resume = FileField("更新简历", validators=[Required()])
     submit = SubmitField("提交")
 
 
