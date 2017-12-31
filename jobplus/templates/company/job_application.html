@@ -27,7 +27,7 @@
                 <div class="dropdown">
                     <p id="dropdownMenu1" data-toggle="dropdown"><span class="caret"></span></p>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="{{ url_for("user.resume_file", filename=application.user.resume_file_name) }}">查看简历</a></li>
+                        <li><a href="{{ application.user.resume_url }}">查看简历</a></li>
                         <li><a href="{{ url_for("company.accept_application", application_id=application.id) }}">接受</a></li>
                         <li><a href="{{ url_for("company.reject_application", application_id=application.id) }}">拒绝</a></li>
                 

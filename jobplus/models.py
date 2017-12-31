@@ -27,7 +27,7 @@ class User(Base, UserMixin):
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
     # 保存简历的文件名
-    resume_file_name = db.Column(db.String(64))
+    resume_url = db.Column(db.String(64))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     company = db.relationship("Company", uselist=False)
     name = db.Column(db.String(32))

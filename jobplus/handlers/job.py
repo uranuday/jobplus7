@@ -30,7 +30,7 @@ def detail(job_id):
 @job.route("/<int:job_id>/apply")
 @login_required
 def apply(job_id):
-    if current_user.resume_file_name is None:
+    if current_user.resume_url is None:
         flash("请上传简历",'warning')
         return redirect(url_for("user.resume"))
     job = Job.query.get_or_404(job_id)

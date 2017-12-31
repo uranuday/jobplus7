@@ -4,7 +4,7 @@ from jobplus.forms import UserProfileForm, UploadResumeForm
 from jobplus.decorators import user_required
 from jobplus.models import db, User, Application
 from werkzeug import secure_filename
-#import os
+import os
 
 
 
@@ -41,8 +41,9 @@ def resume():
         user = current_user
         filename = secure_filename(form.resume.data.filename)
         filename = user.username + '-' + filename
-        form.resume.data.save(current_app.config['UPLOAD_FOLDER'] + filename)
-        user.resume_file_name = filename
+        form.resume.data.save(os.path.join(current_app.config['UPLOAD_FOLDER'],filename))
+        file_url = url_for('user.resume_file', filename=filename)
+        user.resume_url = file_url
         db.session.add(user)
         db.session.commit()
         flash("简历更新成功", 'success')
@@ -55,6 +56,9 @@ def resume():
 @user.route("/resume/<filename>")
 @user_required
 def resume_file(filename):
+    print(os.getcwd())
+    print(current_app.root_path)
+    print(current_app.config['UPLOAD_FOLDER'], filename)
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
