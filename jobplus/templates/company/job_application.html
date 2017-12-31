@@ -1,7 +1,7 @@
 {% extends "company/company_base.html" %}
 
 
-{% block company %}
+{% block content %}
 <div style="text-align:center; padding-bottom:15px;">
     <div class="btn-group" role="group" aria-label="button group">
         <a type="button" class="btn btn-default {% if button=='waiting' %}active{% endif %}" href="{{ url_for("company.job_appl_waiting_list") }}">待处理</a>

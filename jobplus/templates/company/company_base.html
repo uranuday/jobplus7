@@ -12,13 +12,13 @@
         <h4>企业</h4>
         <div class="list-group">
             <a href="{{ url_for("company.profile") }}" class="list-group-item">企业信息</a>
-            <a href="#" class="list-group-item">职位管理</a>
+            <a href="{{ url_for("job.admin") }}" class="list-group-item">职位管理</a>
             <a href="{{ url_for("company.job_application") }}" class="list-group-item">职位申请</a>
         </div>
 
     </div>
     <div class="col-md-9">
-        {% block company %}{% endblock %}
+        {% block content %}{% endblock %}
 
 
     </div>

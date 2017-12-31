@@ -1,7 +1,11 @@
+{% if current_user.is_admin %}
 {% extends "/admin/admin_base.html" %}
+{% elif current_user.is_company %}
+{% extends "company/company_base.html" %}
+{% endif %}
 
 
-{% block admin %}
+{% block content %}
 <table class="table table-hover">
     <thead>
         <tr>
@@ -16,7 +20,7 @@
         {% for job in jobs %}
         <tr>
             <td>{{ job.id }}</td>
-            <td><a href="{{ url_for("job.detail", job_id=job.id) }}">{{ job.job_title }}</a></td>
+            <td><a href="{{ url_for("job.edit", job_id=job.id) }}">{{ job.job_title }}</a></td>
             <td>{{ job.company.company_name }}</td>
             <td {% if not job.is_online %}style="color:red;"{% endif %}>{{ job.is_online }}</td>
             <td>
@@ -24,12 +28,13 @@
                     <p id="dropdownMenu1" data-toggle="dropdown"><span class="caret"></span></p>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMeun1">
                         {% if job.is_online %}
-                        <li><a href="{{ url_for("admin.disable_job", job_id=job.id) }}">disable</a></li>
+                        <li><a href="{{ url_for("job.disable", job_id=job.id) }}">下线</a></li>
                         {% endif %}
                         {% if not job.is_online %}
-                        <li><a href="{{ url_for("admin.enable_job", job_id=job.id) }}">enable</a></li>
+                        <li><a href="{{ url_for("job.enable", job_id=job.id) }}">上线</a></li>
                         {% endif %}
-                        <li><a href="{{ url_for("admin.edit_job", job_id=job.id) }}">edit</a></li>
+                        <li><a href="{{ url_for("job.edit", job_id=job.id) }}">编辑</a></li>
+                        <li><a href="{{ url_for("job.delete", job_id=job.id) }}">删除</a></li>
                     </ul>
                 </div>
             </td>
