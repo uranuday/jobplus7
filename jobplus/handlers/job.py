@@ -106,6 +106,10 @@ def edit(job_id):
         abort(404)
 
 
+@job.route("/new")
+@company_required
+def new():
 
+    return render_template("job/new_job.html")
 
 
