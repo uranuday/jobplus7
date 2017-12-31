@@ -93,7 +93,7 @@ class Job(Base):
 class Application(Base):
     __tablename__ = 'application'
 
-    APPLIED = 10    #申请
+    WAITING = 10    #申请
     REJECTED = 20   #拒绝
     ACCEPTED = 30  #面试
 
@@ -102,7 +102,7 @@ class Application(Base):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id') ,primary_key=True, autoincrement=False)
     job = db.relationship('Job',uselist=False, backref='applications')
     user = db.relationship('User',uselist=False, backref='applications')
-    status = db.Column(db.SmallInteger, default=APPLIED)
+    status = db.Column(db.SmallInteger, default=WAITING)
 
 
     def __repr__(self):

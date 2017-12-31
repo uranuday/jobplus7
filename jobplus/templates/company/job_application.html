@@ -2,6 +2,18 @@
 
 
 {% block company %}
+<div style="text-align:center; padding-bottom:15px;">
+    <div class="btn-group" role="group" aria-label="button group">
+        <a type="button" class="btn btn-default {% if button=='waiting' %}active{% endif %}" href="{{ url_for("company.job_appl_waiting_list") }}">待处理</a>
+        <a type="button" class="btn btn-default {% if button=='accept' %}active{% endif %}" href="{{ url_for("company.job_appl_accept_list") }}">面试</a>
+        <a type="button" class="btn btn-default {% if button=='reject' %}active{% endif %}" href="{{ url_for("company.job_appl_reject_list") }}">已拒绝</a>
+        <!--
+        <button type="button" class="btn btn-default active"><a href="{{ url_for("company.job_appl_waiting_list") }}">待处理</a></button>
+        <button type="button" class="btn btn-default"><a href="{{ url_for("company.job_appl_accept_list") }}">面试</a></button>
+        <button type="button" class="btn btn-default"><a href="{{ url_for("company.job_appl_reject_list") }}">已拒绝</a></button>
+        -->
+    </div>
+</div>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -15,7 +27,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for application in applications %}
+        {% for application in application_list %}
         <tr>
             <td>{{ application.id }}</td>
             <td>{{ application.job.job_title }}</td>

@@ -45,11 +45,51 @@ def profile():
 @company.route("/admin/application")
 @company_required
 def job_application():
+    return redirect(url_for("company.job_appl_waiting_list"))
+
+
+@company.route("/admin/application/waiting")
+@company_required
+def job_appl_waiting_list():
     jobs = current_user.company.jobs
     applications = []
+    waiting_list = []
     for job in jobs:
         applications += job.applications
-    return render_template("company/job_application.html", applications=applications)
+    for application in applications:
+        if application.status == Application.WAITING:
+            waiting_list.append(application)
+    return render_template("company/job_application.html", application_list=waiting_list, button='waiting')
+
+
+@company.route("/admin/application/accept")
+@company_required
+def job_appl_accept_list():
+    jobs = current_user.company.jobs
+    applications = []
+    accept_list = []
+    for job in jobs:
+        applications += job.applications
+    for application in applications:
+        if application.status == Application.ACCEPTED:
+            accept_list.append(application)
+    return render_template("company/job_application.html", application_list=accept_list, button='accept')
+
+
+@company.route("/admin/application/reject")
+@company_required
+def job_appl_reject_list():
+    jobs = current_user.company.jobs
+    applications = []
+    reject_list = []
+    for job in jobs:
+        applications += job.applications
+    for application in applications:
+        if application.status == Application.REJECTED:
+            reject_list.append(application)
+    return render_template("company/job_application.html", application_list=reject_list, button='reject')
+
+
 
 
 @company.route("/admin/application/<int:application_id>/accept")
