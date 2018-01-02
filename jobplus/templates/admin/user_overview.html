@@ -1,7 +1,7 @@
 {% extends "admin/admin_base.html" %}
 
 
-{% block admin %}
+{% block content %}
     <div class="horizon">
         <a href="{{ url_for("admin.add_user") }}" type="button" class="btn btn-sm btn-primary">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -35,7 +35,7 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.role }}</td>
                 <td>{{ user.name }}</td>
-                <td>{{ user.is_disable }}</td>
+                <td {% if user.is_disable %}style="color:red;"{% endif %}>{{ user.is_disable }}</td>
                 <td>{{ user.phone }}</td>
                 <td>{{ user.company.company_name }}</td>
                 <td>{{ user.company.website }}</td>

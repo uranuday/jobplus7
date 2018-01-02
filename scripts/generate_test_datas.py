@@ -47,6 +47,7 @@ def iter_users():
     company = Company.query.get(1)
     yield User(
             username = "admin",
+            name = "萧峰",
             email = "admin@jobplus.com",
             password = "123456",
             role = 30
@@ -54,12 +55,15 @@ def iter_users():
 
     yield User(
             username = "puser",
+            name = "段誉",
             email = "puser@p.com",
             password = "123456",
             role = 10
             )
 
-    yield User(username = "cuser",
+    yield User(
+            username = "cuser",
+            name = "虚竹",
             email = "cuser@c.com",
             password = "123456",
             role = 20,
@@ -75,6 +79,13 @@ def create_db():
     for company in iter_companies():
         db.session.add(company)
 
+    try:
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+
+
     for job in iter_jobs():
         db.session.add(job)
 
@@ -86,7 +97,6 @@ def create_db():
     except Exception as e:
         print(e)
         db.session.rollback()
-
 
 
 

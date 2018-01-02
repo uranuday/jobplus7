@@ -1,0 +1,14 @@
+{% if current_user.is_admin %}
+{% extends "/admin/admin_base.html" %}
+{% elif current_user.is_company %}
+{% extends "company/company_base.html" %}
+{% endif %}
+
+
+{% block content %}
+<div class="page-header">
+    <h3>编辑职位</h3>
+
+</div>
+<p>in developing</p>
+{% endblock %}

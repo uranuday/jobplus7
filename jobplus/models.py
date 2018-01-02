@@ -27,7 +27,7 @@ class User(Base, UserMixin):
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
     # 保存简历的文件名
-    resume_file_name = db.Column(db.String(64))
+    resume_url = db.Column(db.String(64))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     company = db.relationship("Company", uselist=False)
     name = db.Column(db.String(32))
@@ -58,6 +58,11 @@ class User(Base, UserMixin):
     def is_company(self):
         return self.role == self.ROLE_COMPANY
 
+    @property
+    def is_normal_user(self):
+        return self.role == self.ROLE_USER
+
+
 class Company(Base):
     __tablename__ = 'company'
 
@@ -77,7 +82,7 @@ class Job(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     job_title = db.Column(db.String(128), index=True, nullable=False)
-    salary = db.Column(db.Integer, nullable=False)
+    salary = db.Column(db.String(32), nullable=False)
     exp_requirement = db.Column(db.String(32))
     location = db.Column(db.String(128))
     description = db.Column(db.String(2048))
@@ -91,15 +96,18 @@ class Job(Base):
         return '<Job: {}>'.format(self.name)
 
 class Application(Base):
-    APPLIED = 10    #申请
-    REJECTED = 20   #拒绝
-    INTERVIEW = 30  #面试
+    __tablename__ = 'application'
 
-    job_id = db.Column(db.Integer, db.ForeignKey('job.id'),primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),primary_key=True)
-    job = db.relationship('Job',uselist=False)
-    user = db.relationship('User',uselist=False)
-    status = db.Column(db.SmallInteger, default=APPLIED)
+    WAITING = 10    #申请
+    REJECTED = 20   #拒绝
+    ACCEPTED = 30  #面试
+
+    id = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True, index=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job.id'), primary_key=True, autoincrement=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id') ,primary_key=True, autoincrement=False)
+    job = db.relationship('Job',uselist=False, backref='applications')
+    user = db.relationship('User',uselist=False, backref='applications')
+    status = db.Column(db.SmallInteger, default=WAITING)
 
 
     def __repr__(self):

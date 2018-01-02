@@ -2,21 +2,21 @@
 
 
 {% block user %}
-<h2>当前简历</h2>
-<p>
-    简历文件：  
-    {% if current_user.resume_file_name is none %}
+<div class="page-header">
+    <h3>简历管理</h3>
+</div>
+<p><b>我的简历：</b>
+    {% if current_user.resume_url is none %}
     无
     {% else %}
-    <a href="{{ url_for("user.resume_file", filename=current_user.resume_file_name) }}">
-        {{ current_user.resume_file_name }}
+    <a href="{{ current_user.resume_url }}">
+        简历
     </a>
     {% endif %}
 </p>
 
 <form method="POST" action="{{ url_for("user.resume") }}" enctype="multipart/form-data">
     {{ form.csrf_token }}
-    <h2>上传简历</h2>
     <div class="form-group">
         {{ form.resume.label }}{{ form.resume }}
     </div>

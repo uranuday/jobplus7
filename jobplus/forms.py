@@ -16,11 +16,16 @@ class LoginForm(FlaskForm):
 
     def validate_email(self, field):
         if field.data and not User.query.filter_by(email = field.data).first():
+            flash("用户未注册", 'danger')
             raise ValidationError('用户未注册')
+        if field.data and User.query.filter_by(email = field.data).first().is_disable:
+            flash("用户被禁用", 'danger')
+            raise ValidationError('用户被禁用')
 
     def validate_password(self, field):
         user = User.query.filter_by(email=self.email.data).first()
         if user and not user.check_password(field.data):
+            flash("密码错误", 'danger')
             raise ValidationError("密码错误")
 
 
@@ -117,7 +122,7 @@ class AddUserForm(UserBaseForm):
 
 
 class UploadResumeForm(FlaskForm):
-    resume = FileField("简历", validators=[Required()])
+    resume = FileField("更新简历", validators=[Required()])
     submit = SubmitField("提交")
 
 

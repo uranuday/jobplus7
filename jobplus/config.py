@@ -1,6 +1,9 @@
+import os
+
+
 class BaseConfig(object):
-    SECRET_KEY = '!!@@'
-    UPLOAD_FOLDER = './uploads/'
+    SECRET_KEY = os.urandom(16)
+    UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
     ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'pdf'])
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024
     DEFAULT_PER_PAGE = 12

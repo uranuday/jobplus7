@@ -1,0 +1,53 @@
+{% extends "company/company_base.html" %}
+
+
+{% block content %}
+<div style="text-align:center; padding-bottom:15px;">
+    <div class="btn-group" role="group" aria-label="button group">
+        <a type="button" class="btn btn-default {% if button=='waiting' %}active{% endif %}" href="{{ url_for("company.job_appl_waiting_list") }}">待处理</a>
+        <a type="button" class="btn btn-default {% if button=='accept' %}active{% endif %}" href="{{ url_for("company.job_appl_accept_list") }}">面试</a>
+        <a type="button" class="btn btn-default {% if button=='reject' %}active{% endif %}" href="{{ url_for("company.job_appl_reject_list") }}">已拒绝</a>
+        <!--
+        <button type="button" class="btn btn-default active"><a href="{{ url_for("company.job_appl_waiting_list") }}">待处理</a></button>
+        <button type="button" class="btn btn-default"><a href="{{ url_for("company.job_appl_accept_list") }}">面试</a></button>
+        <button type="button" class="btn btn-default"><a href="{{ url_for("company.job_appl_reject_list") }}">已拒绝</a></button>
+        -->
+    </div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>职位名称</th>
+            <th>地点</th>
+            <th>申请人</th>
+            <th>状态</th>
+            <th>更新日期</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for application in application_list %}
+        <tr>
+            <td>{{ application.id }}</td>
+            <td>{{ application.job.job_title }}</td>
+            <td>{{ application.job.location }}</td>
+            <td>{{ application.user.name }}</td>
+            <td>{{ application.status|applycode_to_string }}</td>
+            <td>{{ application.updated_at }}</td>
+            <td>
+                <div class="dropdown">
+                    <p id="dropdownMenu1" data-toggle="dropdown"><span class="caret"></span></p>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="{{ application.user.resume_url }}">查看简历</a></li>
+                        <li><a href="{{ url_for("company.accept_application", application_id=application.id) }}">接受</a></li>
+                        <li><a href="{{ url_for("company.reject_application", application_id=application.id) }}">拒绝</a></li>
+                
+                    </ul>
+               </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
