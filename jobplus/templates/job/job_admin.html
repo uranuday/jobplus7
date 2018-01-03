@@ -6,7 +6,14 @@
 
 
 {% block content %}
-<a href="{{ url_for("job.new") }}" style="color:#333;"><button style="margin-bottom:15px;">新建职位</button></a>
+<div class="page-header">
+    <h3>职位管理</h3>
+</div>
+{% if current_user.is_company %}
+<div style="margin-bottom:15px;">
+    <a href="{{ url_for("job.new") }}" type="button", class="btn btn-sm btn-primary">新建职位</a>
+</div>
+{% endif %}
 <table class="table table-hover">
     <thead>
         <tr>

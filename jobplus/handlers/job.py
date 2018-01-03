@@ -3,6 +3,7 @@ from jobplus.models import db, Job, Application
 import json
 from flask_login import login_required, current_user
 from jobplus.decorators import company_required
+from jobplus.forms import JobBaseForm
 
 
 
@@ -96,20 +97,30 @@ def delete(job_id):
         abort(404)
 
 
-@job.route("/<int:job_id>/edit")
+@job.route("/<int:job_id>/edit", methods=["GET", "POST"])
 @company_required
 def edit(job_id):
     job = Job.query.get_or_404(job_id)
     if current_user.is_admin or job in current_user.company.jobs: 
-        return render_template("job/edit_job.html", job=job)
+        form = JobBaseForm(obj=job)
+        if form.validate_on_submit():
+            form.update_job(job)
+            return redirect(url_for("job.admin"))
+        else:
+            return render_template("job/edit_job.html", form=form, job_id=job_id)
     else:
         abort(404)
 
 
-@job.route("/new")
+@job.route("/new", methods=["GET", "POST"])
 @company_required
 def new():
+    form = JobBaseForm()
 
-    return render_template("job/new_job.html")
+    if form.validate_on_submit():
+        form.add_job()
+        return redirect(url_for("job.admin"))
+    else:
+        return render_template("job/new_job.html", form=form)
 
 

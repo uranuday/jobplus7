@@ -3,6 +3,9 @@
 
 
 {% block user %}
+<div class="page-header">
+    <h3>个人信息</h3>
+</div>
 <div class="form">
     {{ render_form(form, url_for("user.profile")) }}
 </div>
