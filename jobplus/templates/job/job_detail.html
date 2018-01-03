@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="padding-top:15px;">
             <a href="{{ url_for("job.apply", job_id=job.id) }}" type="button" {% if current_user in job.applicants %}class="btn btn-default disabled"{% else %}class="btn btn-success"{%endif%}>
                 {% if current_user in job.applicants %}
                 已投递
