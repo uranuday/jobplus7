@@ -3,10 +3,11 @@
 
 
 {% block content %}
-
-<h2>edit user {{ user.username }}</h2>
-
-{{ render_form(form, url_for("admin.edit_user", user_id=user.id)) }}
-
+<div class="page-header">
+    <h3>编辑用户</h3>
+</div>
+<div class="form">
+    {{ render_form(form, url_for("admin.edit_user", user_id=user.id)) }}
+</div>
 
 {% endblock %}
