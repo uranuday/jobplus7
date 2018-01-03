@@ -3,6 +3,7 @@ from jobplus.models import db, Job, Application
 import json
 from flask_login import login_required, current_user
 from jobplus.decorators import company_required
+from jobplus.forms import JobBaseForm
 
 
 
@@ -106,10 +107,15 @@ def edit(job_id):
         abort(404)
 
 
-@job.route("/new")
+@job.route("/new", methods=["GET", "POST"])
 @company_required
 def new():
+    form = JobBaseForm()
 
-    return render_template("job/new_job.html")
+    if form.validate_on_submit():
+        form.add_job()
+        return redirect(url_for("job.admin"))
+    else:
+        return render_template("job/new_job.html", form=form)
 
 

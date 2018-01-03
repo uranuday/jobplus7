@@ -1,11 +1,14 @@
 {% extends "company/company_base.html" %}
+{% from "macros.html" import render_form %}
 
 
 
 {% block content %}
 
-<p>New Job</p>
-
+<div class="page-header">
+    <h3>添加职位</h3>
+</div>
+{{ render_form(form, url_for("job.new")) }}
 
 
 

@@ -3,7 +3,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, ValidationError, TextAreaField, IntegerField, FileField
 from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRange
 from flask import flash
-from jobplus.models import db, User, Company
+from jobplus.models import db, User, Company, Job
+from flask_login import current_user
 
 
 
@@ -198,3 +199,33 @@ class EditCompanyForm(UserBaseForm, CompanyBaseForm):
         return [user, company]
 
 
+
+class JobBaseForm(FlaskForm):
+    job_title = StringField("职位名称", validators=[Required(), Length(1, 120)])
+    salary = StringField("薪资范围", validators=[Required(), Length(1, 30)])
+    location = StringField("地点", validators=[Required(), Length(1, 120)])
+    exp_requirement = StringField("经验要求", validators=[Required(), Length(1, 30)])
+    edu_requirement = StringField("学历要求", validators=[Required(), Length(1, 30)])
+    description = TextAreaField("职位描述", validators=[Required(), Length(1, 2000)])
+    requirement_detail = TextAreaField("职位要求", validators=[Required(), Length(1, 2000)])
+    submit = SubmitField("提交")
+
+
+    def add_job(self):
+        job = Job()
+        self.populate_obj(job)
+        job.company = current_user.company
+
+        db.session.add(job)
+        db.session.commit()
+
+        flash("职位添加成功", 'success')
+
+        return job
+
+    def updae_job(self, job):
+        self.populate_obj(job)
+        db.session.add(job)
+        db.session.commit()
+
+        flash("职位更新成功", 'success')
