@@ -223,9 +223,11 @@ class JobBaseForm(FlaskForm):
 
         return job
 
-    def updae_job(self, job):
+    def update_job(self, job):
         self.populate_obj(job)
         db.session.add(job)
         db.session.commit()
 
         flash("职位更新成功", 'success')
+
+        return job

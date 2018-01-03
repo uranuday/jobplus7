@@ -97,12 +97,17 @@ def delete(job_id):
         abort(404)
 
 
-@job.route("/<int:job_id>/edit")
+@job.route("/<int:job_id>/edit", methods=["GET", "POST"])
 @company_required
 def edit(job_id):
     job = Job.query.get_or_404(job_id)
     if current_user.is_admin or job in current_user.company.jobs: 
-        return render_template("job/edit_job.html", job=job)
+        form = JobBaseForm(obj=job)
+        if form.validate_on_submit():
+            form.update_job(job)
+            return redirect(url_for("job.admin"))
+        else:
+            return render_template("job/edit_job.html", form=form, job_id=job_id)
     else:
         abort(404)
 

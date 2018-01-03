@@ -56,14 +56,14 @@ def edit_user(user_id):
             form.update_company_user(user)
             return redirect(url_for("admin.user"))
         else:
-            return render_template("admin/edit_user.html", form=form, user=user)
+            return render_template("admin/edit_user.html", form=form, user_id=user_id)
     else:
         form = EditUserForm(obj=user)
         if form.validate_on_submit():
             form.update_user(user)
             return redirect(url_for("admin.user"))
         else:
-            return render_template("admin/edit_user.html", form=form, user=user)
+            return render_template("admin/edit_user.html", form=form, user_id=user_id)
 
 
 
