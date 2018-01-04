@@ -1,3 +1,6 @@
+{% from "macros.html" import render_pagination %}
+
+
 {% if current_user.is_admin %}
 {% extends "/admin/admin_base.html" %}
 {% elif current_user.is_company %}
@@ -25,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for job in jobs %}
+        {% for job in pagination.items %}
         <tr>
             <td>{{ job.id }}</td>
             <td><a href="{{ url_for("job.edit", job_id=job.id) }}">{{ job.job_title }}</a></td>
@@ -50,4 +53,7 @@
         {% endfor %}
     </tbody>
 </table>
+
+{{ render_pagination(pagination, 'job.admin') }}
+
 {% endblock %}
