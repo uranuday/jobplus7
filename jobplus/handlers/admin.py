@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, request, current_app
 from jobplus.models import db, User, Job
 from jobplus.decorators import admin_required
 from jobplus.forms import AddUserForm, AddCompanyForm, EditUserForm, EditCompanyForm
@@ -18,8 +18,13 @@ def index():
 @admin.route("/user")
 @admin_required
 def user():
-    users = User.query.all()
-    return render_template("admin/user_overview.html", users=users)
+    page = request.args.get('page', default=1, type=int)
+    pagination = User.query.paginate(
+            page = page,
+            per_page = current_app.config['DEFAULT_PER_PAGE'],
+            error_out = False
+            )
+    return render_template("admin/user_overview.html", pagination=pagination)
 
 
 @admin.route("/user/<int:user_id>/disable")

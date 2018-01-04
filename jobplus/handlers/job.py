@@ -48,14 +48,23 @@ def apply(job_id):
 @job.route("/admin")
 @company_required
 def admin():
+    page = request.args.get('page', default=1, type=int)
     if current_user.is_admin:
-        jobs = Job.query.all()[0:12]
+        pagination = Job.query.paginate(
+                page = page,
+                per_page = current_app.config['DEFAULT_PER_PAGE'],
+                error_out = False
+                )
     elif current_user.is_company:
-        jobs = current_user.company.jobs
+        pagination = Job.query.filter_by(company_id=current_user.company.id).paginate(
+                page = page,
+                per_page = current_app.config['DEFAULT_PER_PAGE'],
+                error_out = False
+                )
     else:
         abort(404)
 
-    return render_template("/job/job_admin.html", jobs=jobs)
+    return render_template("/job/job_admin.html", pagination=pagination)
 
 
 @job.route("/<int:job_id>/disable")
