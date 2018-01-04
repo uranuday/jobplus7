@@ -5,6 +5,7 @@ from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRang
 from flask import flash
 from jobplus.models import db, User, Company, Job
 from flask_login import current_user
+import re
 
 
 
@@ -61,7 +62,7 @@ class UserBaseForm(FlaskForm):
 
 #企业基表单
 class CompanyBaseForm(FlaskForm):
-    company_name = StringField("公司名称名称", validators=[Required(), Length(0, 128)])
+    company_name = StringField("公司名称", validators=[Required(), Length(0, 128)])
     location = StringField("地址", validators=[Required(), Length(0, 128)])
     logo_url = StringField("Logo URL", validators=[Length(0, 128)])
     website = StringField("Web Site", validators=[Length(0, 64)])
@@ -106,12 +107,16 @@ class CompanyProfileForm(CompanyBaseForm):
 
 
 class AddUserForm(UserBaseForm):
+    user = None
+    phone = None
 
-    submit = SubmitField("添加")
+    submit = SubmitField("提交")
 
 
 
     def validate_username(self, field):
+        if not re.match('^\w*$', field.data):
+            raise ValidationError("用户名只能包含字母和数字")
         if User.query.filter_by(username=field.data).first():
             raise ValidationError("用户名已存在")
 
@@ -130,11 +135,20 @@ class UploadResumeForm(FlaskForm):
 
 
 class AddCompanyForm(UserBaseForm, CompanyBaseForm):
+    name = None
+    phone = None
+    location = None
+    logo_url = None
+    website = None
+    slogan = None
+    description = None
 
-    submit = SubmitField("添加")
+    submit = SubmitField("提交")
 
 
     def validate_username(self, field):
+        if not re.match('^\w*$', field.data):
+            raise ValidationError("用户名只能包含字母和数字")
         if User.query.filter_by(username=field.data).first():
             raise ValidationError("用户名已存在")
 
@@ -231,3 +245,7 @@ class JobBaseForm(FlaskForm):
         flash("职位更新成功", 'success')
 
         return job
+
+
+
+

@@ -72,7 +72,7 @@ class Company(Base):
     logo_url = db.Column(db.String(128))
     website = db.Column(db.String(64),)
     slogan = db.Column(db.String(128))
-    description = db.Column(db.String(2048), nullable=False)
+    description = db.Column(db.String(2048))
 
     def __repr__(self):
         return '<Company: {}>'.format(self.name)
