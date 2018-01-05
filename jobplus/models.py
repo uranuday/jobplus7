@@ -87,7 +87,7 @@ class Job(Base):
     exp_requirement = db.Column(db.String(32))
     edu_requirement = db.Column(db.String(32))
     description = db.Column(db.String(2048))
-    requirement_detail = db.Column(db.String(2048))
+    requirements = db.Column(db.String(2048))    #requirement detail
     is_online = db.Column(db.Boolean, default=True)
     company = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))

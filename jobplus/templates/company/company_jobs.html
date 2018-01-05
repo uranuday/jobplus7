@@ -3,6 +3,7 @@
 
 {% block content %}
 {% for job in company.jobs %}
+{% if job.is_online %}
 <div class="row horizon">
     <div class="col-md-9">
         <a href="{{  url_for("job.detail", job_id=job.id)}}">
@@ -18,7 +19,7 @@
 
     </div>
 </div>
-
+{% endif %}
 {% endfor %}
 
 {% endblock %}

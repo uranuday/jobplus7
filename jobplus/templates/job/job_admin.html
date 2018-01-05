@@ -14,7 +14,10 @@
 </div>
 {% if current_user.is_company %}
 <div style="margin-bottom:15px;">
-    <a href="{{ url_for("job.new") }}" type="button", class="btn btn-sm btn-primary">新建职位</a>
+    <a href="{{ url_for("job.new") }}" type="button", class="btn btn-sm btn-primary">
+        <span class="glyphicon glyphicon-plus"></span>
+        添加职位
+    </a>
 </div>
 {% endif %}
 <table class="table table-hover">
