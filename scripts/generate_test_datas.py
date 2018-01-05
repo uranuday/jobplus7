@@ -27,11 +27,12 @@ def iter_jobs():
     for job in jobs:
         for i in range(1,6):
             company = Company.query.get(i)
-            L = 6   #生成句子的数量
-            sentences = fake.sentences(L)   #生成句子
             description = ''
-            for sentence in sentences:
+            for sentence in fake.sentences(6):
                 description += sentence + '\r'
+            requirements = ''
+            for sentence in fake.sentences(6):
+                requirements += sentence + '\r'
             yield Job(
                     job_title = job['job_title'],
                     location = job['location'],
@@ -39,7 +40,8 @@ def iter_jobs():
                     salary = job['salary'],
                     exp_requirement = job['exp_requirement'],
                     edu_requirement = job['edu_requirement'],
-                    company = company
+                    company = company,
+                    requirements = requirements
                     )
 
 

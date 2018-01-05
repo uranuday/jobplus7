@@ -221,7 +221,7 @@ class JobBaseForm(FlaskForm):
     exp_requirement = StringField("经验要求", validators=[Required(), Length(1, 30)])
     edu_requirement = StringField("学历要求", validators=[Required(), Length(1, 30)])
     description = TextAreaField("职位描述", validators=[Required(), Length(1, 2000)])
-    requirement_detail = TextAreaField("职位要求", validators=[Required(), Length(1, 2000)])
+    requirements = TextAreaField("职位要求", validators=[Required(), Length(1, 2000)])
     submit = SubmitField("提交")
 
 
