@@ -97,7 +97,7 @@ def job_appl_reject_list():
 def accept_application(application_id):
     application = Application.query.filter_by(id=application_id).first()
     if application.job not in current_user.company.jobs:
-        return abort(404)
+        return abort(403)
     application.status = Application.ACCEPTED
     db.session.add(application)
     db.session.commit()
@@ -110,7 +110,7 @@ def accept_application(application_id):
 def reject_application(application_id):
     application = Application.query.filter_by(id=application_id).first()
     if application.job not in current_user.company.jobs:
-        return abort(404)
+        return abort(403)
     application.status = Application.REJECTED
     db.session.add(application)
     db.session.commit()
