@@ -13,7 +13,7 @@ company = Blueprint("company", __name__, url_prefix="/company")
 @company.route("/")
 def index():
     page = request.args.get('page', default=1, type=int)
-    pagination = Company.query.paginate(
+    pagination = Company.query.order_by(Company.created_at.desc()).paginate(
             page = page,
             per_page = current_app.config['DEFAULT_PER_PAGE'],
             error_out = False
@@ -96,6 +96,8 @@ def job_appl_reject_list():
 @company_required
 def accept_application(application_id):
     application = Application.query.filter_by(id=application_id).first()
+    if application is None:
+        return abort(404)
     if application.job not in current_user.company.jobs:
         return abort(403)
     application.status = Application.ACCEPTED
@@ -109,6 +111,8 @@ def accept_application(application_id):
 @company_required
 def reject_application(application_id):
     application = Application.query.filter_by(id=application_id).first()
+    if application is None:
+        return abort(404)
     if application.job not in current_user.company.jobs:
         return abort(403)
     application.status = Application.REJECTED
