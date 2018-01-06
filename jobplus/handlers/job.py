@@ -14,7 +14,7 @@ job = Blueprint("job", __name__, url_prefix="/job")
 @job.route("/")
 def index():
     page = request.args.get('page', default=1, type=int)
-    pagination = Job.query.paginate(
+    pagination = Job.query.filter_by(is_online=True).order_by(Job.updated_at.desc()).paginate(
             page=page,
             per_page=current_app.config['DEFAULT_PER_PAGE'],
             error_out=False
@@ -62,7 +62,7 @@ def admin():
                 error_out = False
                 )
     else:
-        abort(404)
+        abort(403)
 
     return render_template("/job/job_admin.html", pagination=pagination)
 
@@ -77,7 +77,7 @@ def disable(job_id):
         db.session.commit()
         return redirect(url_for("job.admin"))
     else:
-        abort(404)
+        abort(403)
 
 
 @job.route("/<int:job_id>/enable")
@@ -90,7 +90,7 @@ def enable(job_id):
         db.session.commit()
         return redirect(url_for("job.admin"))
     else:
-        abort(404)
+        abort(403)
 
 
 @job.route("/<int:job_id>/delete")
@@ -103,7 +103,7 @@ def delete(job_id):
         flash("职位删除成功", 'success')
         return redirect(url_for("job.admin"))
     else:
-        abort(404)
+        abort(403)
 
 
 @job.route("/<int:job_id>/edit", methods=["GET", "POST"])
@@ -118,7 +118,7 @@ def edit(job_id):
         else:
             return render_template("job/edit_job.html", form=form, job_id=job_id)
     else:
-        abort(404)
+        abort(403)
 
 
 @job.route("/new", methods=["GET", "POST"])

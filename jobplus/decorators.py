@@ -10,7 +10,7 @@ def role_required(role):
         @wraps(func)
         def wrapper(*args, **kwargs):
             if not current_user.is_authenticated or current_user.role < role:
-                abort(404)
+                abort(403)
 
             return func(*args, **kwargs)
 

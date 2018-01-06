@@ -26,12 +26,12 @@ class User(Base, UserMixin):
     email = db.Column(db.String(64), unique=True, index=True, nullable=False)
     _password = db.Column('password', db.String(256), nullable=False)
     role = db.Column(db.SmallInteger, default=ROLE_USER)
-    # 保存简历的文件名
+    # 保存简历的文件URL
     resume_url = db.Column(db.String(64))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))
     company = db.relationship("Company", uselist=False)
     name = db.Column(db.String(32))
-    phone = db.Column(db.Integer)
+    phone = db.Column(db.String(32))
     working_years = db.Column(db.SmallInteger)
     is_disable = db.Column(db.Boolean, default=False)
 
@@ -72,7 +72,7 @@ class Company(Base):
     logo_url = db.Column(db.String(128))
     website = db.Column(db.String(64),)
     slogan = db.Column(db.String(128))
-    description = db.Column(db.String(2048), nullable=False)
+    description = db.Column(db.String(2048))
 
     def __repr__(self):
         return '<Company: {}>'.format(self.name)
@@ -87,7 +87,7 @@ class Job(Base):
     exp_requirement = db.Column(db.String(32))
     edu_requirement = db.Column(db.String(32))
     description = db.Column(db.String(2048))
-    requirement_detail = db.Column(db.String(2048))
+    requirements = db.Column(db.String(2048))    #requirement detail
     is_online = db.Column(db.Boolean, default=True)
     company = db.relationship('Company', uselist=False, backref=db.backref('jobs'))
     company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete='SET NULL'))

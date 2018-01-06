@@ -5,6 +5,7 @@ from wtforms.validators import Length, Email, EqualTo, Required, URL, NumberRang
 from flask import flash
 from jobplus.models import db, User, Company, Job
 from flask_login import current_user
+import re
 
 
 
@@ -32,13 +33,19 @@ class LoginForm(FlaskForm):
 
 #用户基表单
 class UserBaseForm(FlaskForm):
+    id = IntegerField("id")
     username = StringField("用户名", validators=[Required(), Length(3,32)])
     email = StringField("邮箱", validators=[Required(), Email()])
     password = PasswordField("密码", validators=[Required(), Length(6, 24)])
     repeat_password = PasswordField("重复密码", validators=[Required(), EqualTo('password', "密码不匹配")])
     name = StringField("姓名", validators=[Required(), Length(1, 30)])
-    phone = IntegerField("手机号", validators=[Required(), NumberRange(min=10000000000, max=19999999999, message="无效手机号")])
+    phone = StringField("手机号", validators=[Required()])
     submit = SubmitField("保存")
+
+
+    def validate_phone(self, field):
+        if not re.match('^\d*$', field.data):
+            raise ValidationError("手机号码格式错误")
 
 
     def add_user(self):
@@ -61,7 +68,8 @@ class UserBaseForm(FlaskForm):
 
 #企业基表单
 class CompanyBaseForm(FlaskForm):
-    company_name = StringField("公司名称名称", validators=[Required(), Length(0, 128)])
+    id = IntegerField("id")
+    company_name = StringField("公司名称", validators=[Required(), Length(0, 128)])
     location = StringField("地址", validators=[Required(), Length(0, 128)])
     logo_url = StringField("Logo URL", validators=[Length(0, 128)])
     website = StringField("Web Site", validators=[Length(0, 64)])
@@ -97,21 +105,44 @@ class UserProfileForm(UserBaseForm):
     repeat_password = None
 
 
+    def validate_username(self, field):
+        if not re.match('^\w*$', field.data):
+            raise ValidationError("用户名只能包含字母和数字")
+        original_username = User.query.get(self.id.data).username
+        if field.data != original_username and User.query.filter_by(username=field.data).first():
+            raise ValidationError("用户名已存在")
+
+
+    def validate_email(self, field):
+        original_email = User.query.get(self.id.data).email
+        if field.data != original_email and User.query.filter_by(email=field.data).first():
+            raise ValidationError("邮箱已存在")
+
+
+
 
 
 class CompanyProfileForm(CompanyBaseForm):
-    pass
+
+    def validate_company_name(self, field):
+        original_company_name = Company.query.get(self.id.data).company_name
+        if field.data != original_company_name and Company.query.filter_by(company_name=field.data).first():
+            raise ValidationError("公司名称已存在")
 
 
 
 
 class AddUserForm(UserBaseForm):
+    user = None
+    phone = None
 
-    submit = SubmitField("添加")
+    submit = SubmitField("提交")
 
 
 
     def validate_username(self, field):
+        if not re.match('^\w*$', field.data):
+            raise ValidationError("用户名只能包含字母和数字")
         if User.query.filter_by(username=field.data).first():
             raise ValidationError("用户名已存在")
 
@@ -130,11 +161,20 @@ class UploadResumeForm(FlaskForm):
 
 
 class AddCompanyForm(UserBaseForm, CompanyBaseForm):
+    name = None
+    phone = None
+    location = None
+    logo_url = None
+    website = None
+    slogan = None
+    description = None
 
-    submit = SubmitField("添加")
+    submit = SubmitField("提交")
 
 
     def validate_username(self, field):
+        if not re.match('^\w*$', field.data):
+            raise ValidationError("用户名只能包含字母和数字")
         if User.query.filter_by(username=field.data).first():
             raise ValidationError("用户名已存在")
 
@@ -207,7 +247,7 @@ class JobBaseForm(FlaskForm):
     exp_requirement = StringField("经验要求", validators=[Required(), Length(1, 30)])
     edu_requirement = StringField("学历要求", validators=[Required(), Length(1, 30)])
     description = TextAreaField("职位描述", validators=[Required(), Length(1, 2000)])
-    requirement_detail = TextAreaField("职位要求", validators=[Required(), Length(1, 2000)])
+    requirements = TextAreaField("职位要求", validators=[Required(), Length(1, 2000)])
     submit = SubmitField("提交")
 
 
@@ -231,3 +271,7 @@ class JobBaseForm(FlaskForm):
         flash("职位更新成功", 'success')
 
         return job
+
+
+
+

@@ -53,8 +53,10 @@
     </ul>
     <h3>职位要求</h3>
     <ul>
-        {% for i in range(6) %}
-        <li>{{ i }}</li>
+        {% for req in job.requirements.split('\r') %}
+        {% if req != '' %}
+        <li>{{ req }}</li>
+        {% endif %}
         {% endfor %}
     </ul>
 </div>

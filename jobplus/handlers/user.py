@@ -52,13 +52,9 @@ def resume():
         return render_template("user/upload_resume.html", form=form)
 
 
-#有待实现简历保护
 @user.route("/resume/<filename>")
 @user_required
 def resume_file(filename):
-    print(os.getcwd())
-    print(current_app.root_path)
-    print(current_app.config['UPLOAD_FOLDER'], filename)
     return send_from_directory(current_app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
