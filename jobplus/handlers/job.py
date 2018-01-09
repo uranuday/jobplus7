@@ -99,9 +99,15 @@ def delete(job_id):
     job = Job.query.get_or_404(job_id)
     if current_user.is_admin or job in current_user.company.jobs: 
         db.session.delete(job)
-        db.session.commit()
-        flash("职位删除成功", 'success')
-        return redirect(url_for("job.admin"))
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            flash("职位删除失败，请使用下线功能或联系管理员",'danger')
+        else:
+            flash("职位删除成功", 'success')
+        finally:
+            return redirect(url_for("job.admin"))
     else:
         abort(403)
 
