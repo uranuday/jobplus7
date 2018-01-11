@@ -26,7 +26,7 @@ class ProductionConfig(BaseConfig):
 
 
 class TestingConfig(BaseConfig):
-    pass
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root@localhost:3306/jobplus_test?charset=utf8'
 
 
 
