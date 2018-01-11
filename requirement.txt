@@ -8,4 +8,7 @@ ipython == 6.2.0
 flask_shell_ipython == 0.3.0
 Faker==0.8.7
 Scrapy==1.4.0
-
+pytest == 3.3.2
+pytest-flask == 0.10.0
+gunicorn == 19.7.1
+gevent == 1.2.2
