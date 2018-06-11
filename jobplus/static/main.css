@@ -7,7 +7,67 @@
 
 
 .form {
-    width: 400px;
-    margin: 0 auto;
+    max-width: 400px;
+    margin: 0 auto auto 20px;
 }
 
+.horizon {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 10px 0;
+}
+
+a,
+a:hover,
+a:visited{
+    text-decoration: none !important;
+}
+
+.nav-pagination {
+    text-align: center;
+}
+
+
+.padding-top {
+    padding-top: 50px;
+}
+
+
+.text-muted: {
+    color: #777;
+}
+
+.jobname {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.jobname:hover{
+    text-decoration: underline;
+}
+
+
+.company-name {
+    font-weight: bold;
+    color: #333;
+    line-height: 1;
+}
+
+.company-name:hover{
+    text-decoration: underline;
+}
+
+
+
+.list-more{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+.list-more-btn {
+    padding: 10px 138px;
+    color: #5cb85c;
+    background-color: #fff;
+}

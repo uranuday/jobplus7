@@ -1,0 +1,19 @@
+{% from "macros.html" import render_form %}
+
+
+{% if current_user.is_admin %}
+{% extends "/admin/admin_base.html" %}
+{% elif current_user.is_company %}
+{% extends "company/company_base.html" %}
+{% endif %}
+
+
+{% block content %}
+<div class="page-header">
+    <h3>编辑职位</h3>
+
+</div>
+<div class="form">
+{{ render_form(form, url_for("job.edit", job_id=job_id)) }}
+</div>
+{% endblock %}

@@ -8,15 +8,16 @@
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for("static", filename="main.css") }}">
+    {% block css %}{% endblock %}
 
 </head>
 
 
-<body>
+<body style="margin-top:50px;">
 
 
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
@@ -29,13 +30,30 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">职位</a></li>
-                    <li><a href="#">公司</a></li>
+                    <li><a href="{{ url_for("company.index") }}">公司</a></li>
+                    <li><a href="{{ url_for("job.index") }}">职位</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">公司注册</a></li>
-                    <li><a href="#">求职者注册</a></li>
-                    <li><a href="{{url_for('front.login')}}">登录</a></li>
+                    {% if not current_user.is_authenticated %}
+                        <li><a href="{{url_for('front.company_register')}}">公司注册</a></li>
+                        <li><a href="{{url_for('front.user_register')}}">求职者注册</a></li>
+                        <li><a href="{{url_for('front.login')}}">登录</a></li>
+                    {% else %}
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="username">{{ current_user.username }}</span><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            {% if current_user.is_admin %}
+                            <li><a href="{{ url_for("admin.index") }}">管理页面</a></li>
+                            {% elif current_user.is_company %}
+                            <li><a href="{{ url_for("company.admin") }}">公司主页</a></li>
+                            {% else %}
+                            <li><a href="{{ url_for("user.index") }}">个人主页</a></li>
+                            {% endif %}
+                            <li role="separator" class="divider"></li>
+                            <li><a href="{{ url_for("front.logout") }}">退出登录</a></li>
+                        </ul>
+                        </li>
+                    {% endif %}
                 </ul>
 
 
@@ -43,14 +61,32 @@
         </div>
 
     </nav>
+
+    {% block jumbotron %}{% endblock %}
+
+    <div class="container-fluid">
+        {% block wide %}{% endblock %}
+    </div>
     <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                        <button tye="button" class="close" data-dismiss="alert" aria-label="close" aria-hidden="true">&times;</span></button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
 
         {% block body %}{% endblock %}
-        {% block footer %}{% endblock %}
     </div>
 
     <footer class="footer">
-        &copy; Copyright 2017 by Jobplus
+        <div class="container">
+            &copy; Copyright 2017 by Jobplus
+        </div>
     </footer>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

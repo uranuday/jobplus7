@@ -1,0 +1,62 @@
+{% from "macros.html" import render_pagination %}
+
+
+{% if current_user.is_admin %}
+{% extends "/admin/admin_base.html" %}
+{% elif current_user.is_company %}
+{% extends "company/company_base.html" %}
+{% endif %}
+
+
+{% block content %}
+<div class="page-header">
+    <h3>职位管理</h3>
+</div>
+{% if current_user.is_company %}
+<div style="margin-bottom:15px;">
+    <a href="{{ url_for("job.new") }}" type="button", class="btn btn-sm btn-primary">
+        <span class="glyphicon glyphicon-plus"></span>
+        添加职位
+    </a>
+</div>
+{% endif %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>职位名称</th>
+            <th>公司</th>
+            <th>是否在线</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in pagination.items %}
+        <tr>
+            <td>{{ job.id }}</td>
+            <td><a href="{{ url_for("job.edit", job_id=job.id) }}">{{ job.job_title }}</a></td>
+            <td>{{ job.company.company_name }}</td>
+            <td {% if not job.is_online %}style="color:red;"{% endif %}>{{ job.is_online }}</td>
+            <td>
+                <div class="dropdown">
+                    <p id="dropdownMenu1" data-toggle="dropdown"><span class="caret"></span></p>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMeun1">
+                        {% if job.is_online %}
+                        <li><a href="{{ url_for("job.disable", job_id=job.id) }}">下线</a></li>
+                        {% endif %}
+                        {% if not job.is_online %}
+                        <li><a href="{{ url_for("job.enable", job_id=job.id) }}">上线</a></li>
+                        {% endif %}
+                        <li><a href="{{ url_for("job.edit", job_id=job.id) }}">编辑</a></li>
+                        <li><a href="{{ url_for("job.delete", job_id=job.id) }}">删除</a></li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ render_pagination(pagination, 'job.admin') }}
+
+{% endblock %}

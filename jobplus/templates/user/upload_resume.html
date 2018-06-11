@@ -1,0 +1,27 @@
+{% extends "user/user_base.html" %}
+
+
+{% block user %}
+<div class="page-header">
+    <h3>我的简历</h3>
+</div>
+<p><b>我的简历：</b>
+    {% if current_user.resume_url is none %}
+    无
+    {% else %}
+    <a href="{{ current_user.resume_url }}">
+        简历
+    </a>
+    {% endif %}
+</p>
+
+<form method="POST" action="{{ url_for("user.resume") }}" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.resume.label }}{{ form.resume }}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+
+</form>    
+
+{% endblock %}

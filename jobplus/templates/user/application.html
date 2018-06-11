@@ -1,0 +1,33 @@
+{% extends "user/user_base.html"%}
+
+
+
+{% block user %}
+<div class="page-header">
+    <h3>我的投递</h3>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>职位名称</th>
+            <th>公司</th>
+            <th>状态</th>
+            <th>申请日期</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for application in applications %}
+        <tr>
+            <td>
+                <a href="{{ url_for("job.detail", job_id=application.job.id) }}">
+                    {{ application.job.job_title }}
+                </a>
+            </td>
+            <td>{{ application.job.company.company_name }}</td>
+            <td>{{ application.status|applycode_to_string }}</td>
+            <td>{{ application.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

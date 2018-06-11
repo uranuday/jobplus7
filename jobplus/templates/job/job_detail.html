@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}职位详情{% endblock %}
+
+{% block body %}
+<!-- 职位描述信息 -->
+<div class="horizon">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="media">
+                <div class="media-left">
+                    <a href="{{ url_for("company.jobs", company_id=job.company.id) }}">
+                        <img width="120" height="120" alt="{{ job.company.company_name }}" src={{ job.company.logo_url }}</img>
+                </a>
+                </div>
+                <div class="media-body">
+                    <h3>
+                        {{ job.company.company_name }}-
+                        {{ job.job_title }}-
+                        {{ job.location }}
+
+                    </h3>
+                    <p>{{ job.exp_requirement }}  {{ job.edu_requirement }}</p>
+                    <p style="color: #ff8000;">{{ job.salary }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3" style="padding-top:15px;">
+            <a href="{{ url_for("job.apply", job_id=job.id) }}" type="button" {% if current_user in job.applicants %}class="btn btn-default disabled"{% else %}class="btn btn-success"{%endif%}>
+                {% if current_user in job.applicants %}
+                已投递
+                {% else %}
+                投递简历
+                {% endif %}
+            </a>
+            <span class="glyphicon glyphicon-hand-left" style="padding-left:10px;"></span>
+            <span class="text-muted">投递简历</span>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- 职位详细信息 -->
+<div>
+    <h3>职位描述</h3>
+    <ul>
+        {% for desc in job.description.split('\r') %}
+        {% if desc != '' %}
+        <li>{{ desc }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <h3>职位要求</h3>
+    <ul>
+        {% for req in job.requirements.split('\r') %}
+        {% if req != '' %}
+        <li>{{ req }}</li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
